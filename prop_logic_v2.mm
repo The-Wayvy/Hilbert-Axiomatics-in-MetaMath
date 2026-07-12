@@ -1,3 +1,36 @@
+$(
+list of theorems
+
+theo_1
+|- ( ( A -> B ) -> ( A -> A ) )
+
+theo_2 
+|- ( A -> ( B -> ( C -> B ) ) )
+
+id_theo 
+|- ( A -> A )
+
+prefix_theo
+if |- A $.
+then |- ( B -> A )
+
+weaken_theo 
+|- ( ( A -> B ) -> ( A -> ( C -> B ) ) )
+
+theo_3 
+|- ( A -> ( ( B -> C ) -> ( B -> B ) ) )  
+
+theo_4 
+|- ( A -> ( B -> ( C -> ( D -> C ) ) ) )
+
+$)
+
+
+
+
+
+
+
 $( Declare the constant symbols we will use $)
 $c -> ( ) wff |- $.
 
@@ -37,6 +70,8 @@ theo_0.2 $p wff ( ( A -> B ) -> ( A -> A ) ) $=
 wa wb ax0 wa wa ax0 ax0
 $.
 
+$( 1.1 $)
+
 theo_1 $p |- ( ( A -> B ) -> ( A -> A ) ) $=
 wa wb theo_0.1 $( show that A -> ( B -> A ) is a wff ... ie. X $)
 wa wb theo_0.2 $( show that ( A -> B ) -> ( A -> A ) is a wff ... ie. Y $)
@@ -44,6 +79,8 @@ wa wb ax1 $( show |- A -> (B -> A) ... ie. cond ... ie. |- X $)
 wa wb wa ax2 $( show |- (A -> (B -> A)) -> ((A -> B) -> (A -> A)) ... ie. infr ... ie. |- ( X -> Y) $)
 mopo
 $.
+
+$( 1.2 $)
 
 theo_2 $p |- ( A -> ( B -> ( C -> B ) ) ) $=
 $( 1 wff B -> ( C -> B ) $)
@@ -57,7 +94,7 @@ wb wc wb ax0 ax0 wa ax1
 mopo
 $. 
 
-$( theo_3 $)
+$( 2.1 $)
 id_theo $p |- ( A -> A ) $=
 
 
@@ -83,6 +120,77 @@ mopo
 mopo
 $.
 
+$( prefixing $)
+
+${
+
+prefixee $e |- A $.
+
+prefix_theo $p |- ( B -> A ) $=
+
+$( wff A ... ie. wff X $)
+wa
+$( wff ( B -> A ) ... ie. wff Y $)
+wb wa ax0
+$( |- A ... ie. |- X $)
+prefixee
+$( |- A -> ( B -> A ) ... ie. |- X -> Y $)
+wa wb ax1
+$( |- B -> A ... ie. |- X -> Y $)
+mopo 
+
+$.
+
+$}
+
+$( 2.2 $)
+weaken_theo $p |- ( ( A -> B ) -> ( A -> ( C -> B ) ) ) $= 
+
+
+$( wff A -> ( B -> ( C -> B ) ) ... ie. wff X $)
+wa wb wc wb ax0 ax0 ax0
+$( wff ( A -> B ) -> ( A -> ( C -> B ) ) ... ie. wff Y $)
+wa wb ax0 wa wc wb ax0 ax0 ax0
+$( |- A -> ( B -> ( C -> B ) ) $)
+wb wc wb ax0 ax0 wa wb wc ax1 prefix_theo
+$( |- ( A -> ( B -> ( C -> B ) ) ) -> ( ( A -> B ) -> ( A -> ( C -> B ) ) ) ... ie. |- X -> Y $)
+wa wb wc wb ax0 ax2
+$( |- ( A -> B ) -> ( A -> ( C -> B ) ) ... ie. |- Y $)
+mopo
+
+$.
+
+$( 2.3 $)
+theo_3 $p |- ( A -> ( ( B -> C ) -> ( B -> B ) ) ) $= 
+wb wc ax0 wb wb ax0 ax0 $( wff ( B -> C ) -> ( B -> B ) ... ie. wff A $)
+wa $( wff a ... wff B ie. $)
+wb wc theo_1 $( |- ( B -> C) -> ( B -> B ) ... ie. |- A $) 
+prefix_theo
+$.
+
+$( 2.4 $)
+theo_4 $p |- ( A -> ( B -> ( C -> ( D -> C ) ) ) ) $= 
+
+
+$( wff B -> ( C -> ( D -> C ) ) $)
+wb wc wd wc ax0 ax0 ax0 
+$( wff A $)
+wa
+
+$( wff C -> ( D -> C ) ie. wff A $)
+wc wd wc ax0 ax0
+$( wff B ie. wff B $)
+wb
+$( |- C -> ( D -> C ) ie. |- A $)
+wc wd ax1
+$( |- B -> ( C -> ( D -> C ) ) ie. inner |- B -> A outer |- A $)
+prefix_theo
+
+$( final |- B -> A $)
+prefix_theo
+$. 
+
+$( $)
 
 
 
