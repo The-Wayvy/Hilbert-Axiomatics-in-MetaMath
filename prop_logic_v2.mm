@@ -520,8 +520,6 @@ n_theo_110 |- ( ( ( ~ ( A -> B ) ) -> ( ~ C ) ) -> ( C -> ( A -> A ) ) )
 
 n_theo_111 |- ( ( ( ~ A ) -> ( ( A -> B ) -> C ) ) -> ( ( ~ A ) -> C ) )
 
-
-
 n_theo_112 |- ( ( ( ~ A ) -> ( ~ ( ( B -> C ) -> ( B -> C ) ) ) ) -> A )
 
 n_theo_113 |- ( ( ( ~ A ) -> ( ~ ( A -> B ) ) ) -> ( ( A -> B ) -> B ) )
@@ -543,6 +541,8 @@ n_theo_120 |- ( ( ( ~ A ) -> ( ~ B ) ) -> ( B -> ( C -> ( D -> C ) ) ) )
 n_theo_121 |- ( ( ( ~ A ) -> ( ~ B ) ) -> ( C -> ( D -> ( B -> A ) ) ) )
 
 n_theo_122 |- ( ( ( ~ ( A -> ( B -> A ) ) ) -> ( ~ ( ~ C ) ) ) -> C )
+
+
 
 n_theo_123 |- ( ( ( ~ ( ~ ( ( ~ A ) -> ( ~ A ) ) ) ) -> ( ~ ( ~ A ) ) ) -> A )
 
@@ -4721,7 +4721,311 @@ $.
 n_theo_111 $p |- ( ( ( ~ A ) -> ( ( A -> B ) -> C ) ) -> ( ( ~ A ) -> C ) )
 $=
 
+wa nx0 wa wb ax0 wc ax0 ax0 wa nx0 wa wb ax0 ax0 wa nx0 wc ax0 ax0 ax0
+wa nx0 wa wb ax0 wc ax0 ax0 wa nx0 wc ax0 ax0 
+
+$( |- ( ( ~ A ) -> ( ( A -> B ) -> C ) ) -> ( ( ( ~ A ) -> ( A -> B ) ) -> ( ( ~ A -> C ) ) ) $)
+wa nx0
+wa wb ax0
+wc 
+ax2
+
+$( |- ( ( ( ~ A ) -> ( ( A -> B ) -> C ) ) -> ( ( ( ~ A ) -> ( A -> B ) ) -> ( ( ~ A ) -> C ) ) ) ->
+( ( ( ~ A ) -> ( ( A -> B ) -> C ) ) -> ( ( ~ A ) -> C ) ) $)
+wa nx0 wa wb ax0 wc ax0 ax0
+wa nx0 wa wb ax0 ax0
+wa nx0 wc ax0 
+
+$( |- ( ( ~ A ) -> ( A -> B ) ) $)
+wa nx0 
+wa wa wb ax0 ax0 
+wa wb ax0 
+
+$( |- ( ( ~ A ) -> ( A -> ( A -> B ) ) ) $)
+wa nx0 wa wb ax0 nx0 wa nx0 ax0 ax0 
+wa nx0 wa wa wb ax0 ax0 ax0 
+
+wa nx0 wa wb ax0 nx0 ax1
+
+$( |- ( ( ~ A ) -> ( ( ~ ( A -> B ) ) -> ( ~ A ) ) ) -> ( ( ~ A ) -> ( A -> ( A -> B ) ) ) $)
+
+wa nx0 wa wb ax0 nx0 wa nx0 ax0 wa wa wb ax0 ax0 ax0 ax0
+wa nx0 wa wb ax0 nx0 wa nx0 ax0 ax0 wa nx0 wa wa wb ax0 ax0 ax0 ax0
+
+$( |- ( ~ A ) -> ( ( ( ~ ( A -> B ) ) -> ( ~ A ) ) -> ( A -> ( A -> B ) ) )   $)
+wa wb ax0 nx0 wa nx0 ax0 wa wa wb ax0 ax0 ax0
+wa nx0
+
+$( |- ( ( ~ ( A -> B ) ) -> ( ~ A ) ) -> ( A -> ( A -> B ) ) $)
+wa wb ax0 
+wa
+ax3
+
+prefix_theo
+
+wa nx0 
+wa wb ax0 nx0 wa nx0 ax0 
+wa wa wb ax0 ax0 
+ax2
+
+mopo
+
+mopo
+
+wa wb
+strength_theo
+
+trans_theo_2
+
+drop_true_prefix_2
+
+mopo
+
 $.
+
+n_theo_112 $p |- ( ( ( ~ A ) -> ( ~ ( ( B -> C ) -> ( B -> C ) ) ) ) -> A )
+$=
+wa
+wb wc ax0 wb wc ax0 ax0 
+wb wc ax0 id_theo
+contrapose_1
+$.
+
+n_theo_113 $p |- ( ( ( ~ A ) -> ( ~ ( A -> B ) ) ) -> ( ( A -> B ) -> B ) )
+$=
+
+wa nx0 wa wb ax0 nx0 ax0 
+wa wb ax0 wa wb ax0 wb ax0 ax0 
+wa wb ax0 wb ax0
+
+$( |- ( ( ~ A ) -> ( ~ ( A -> B ) ) ) -> ( ( A -> B ) -> ( ( A -> B ) -> B ) )  $)
+
+wa nx0 wa wb ax0 nx0 ax0
+wa wb ax0 
+wa
+wa wb ax0 wb ax0 
+
+$( |- A -> ( ( A -> B ) -> B ) $)
+wa wb
+condense_mopo
+
+$( |- ( ( ~ A ) -> ( ~ ( A -> B ) ) ) -> ( ( A -> B ) -> A ) $)
+wa
+wa wb ax0
+ax3
+
+suffix_trans_2
+
+$( |- ( ( A -> B ) -> ( ( A -> B ) -> B ) ) -> ( ( A -> B ) -> B ) $)
+wa wb ax0 wb
+strength_theo
+
+trans_theo_2
+
+$.
+
+n_theo_114 $p |- ( ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> ( D -> A ) )
+$=
+
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 wa ax0
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 wd wa ax0 ax0
+
+$( |- ( ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> A ) $)
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 wb wc wb ax0 ax0 wa ax0 ax0  
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 wa ax0 
+
+$( |- ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> ( ( B -> ( C -> B ) ) -> A ) $)
+wa
+wb wc wb ax0 ax0 
+ax3
+
+$( |- ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> ( ( B -> ( C -> B ) ) -> A ) ->
+( ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) ->  A )  $)
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 
+wb wc wb ax0 ax0 
+wa
+wb wc ax1 
+drop_true_prefix_2
+
+mopo
+
+$( |- ( ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> A ) -> 
+( ( ( ~ A ) -> ( ~ ( B -> ( C -> B ) ) ) ) -> ( D -> A ) )  $)
+wa nx0 wb wc wb ax0 ax0 nx0 ax0 
+wa
+wd
+weaken_theo
+
+mopo
+
+$.
+
+n_theo_115 $p |- ( ( ( ~ A ) -> ( ~ ( B -> ( C -> ( D -> B ) ) ) ) ) -> A )
+$=
+
+wa nx0 wb wc wd wb ax0 ax0 ax0 nx0 ax0 wb wc wd wb ax0 ax0 ax0 wa ax0 ax0
+wa nx0     wb wc wd wb ax0 ax0 ax0 nx0    ax0 wa ax0 
+
+$( |- ( ( ~ A ) -> ( ~ ( B -> ( C -> ( D -> B ) ) ) ) ) -> ( ( B -> ( C -> ( D -> B ) ) ) -> A ) $)
+wa
+wb wc wd wb ax0 ax0 ax0 
+ax3
+
+$( |- ( ( ( ~ A ) -> ( ~ ( B -> ( C -> ( D -> B ) ) ) ) ) -> ( ( B -> ( C -> ( D -> B ) ) ) -> A ) ) -> 
+( ( ( ~ A ) -> ( ~ ( B -> ( C -> ( D -> B ) ) ) ) ) -> A ) $)
+
+wa nx0 wb wc wd wb ax0 ax0 ax0 nx0 ax0
+wb wc wd wb ax0 ax0 ax0
+wa
+
+$( |- ( B -> ( C -> ( D -> B ) ) ) $)
+wb wd wb ax0 ax0
+wb wc wd wb ax0 ax0 ax0 
+
+wb wd ax1
+
+$( |- ( B -> ( D -> B ) ) -> ( B -> ( C -> ( D -> B ) ) ) $)
+wb 
+wd wb ax0 
+wc 
+weaken_theo
+
+mopo
+
+drop_true_prefix_2
+
+mopo
+
+$.
+
+n_theo_116 $p |- ( ( ( ~ A ) -> ( ~ ( B -> ( ( ~ A ) -> ( ~ A ) ) ) ) ) -> A )
+$=
+
+wa
+wb wa nx0 wa nx0 ax0 ax0 
+
+wa nx0 wa nx0 ax0 
+wb
+wa nx0 id_theo
+prefix_theo
+
+contrapose_1
+
+$.
+
+n_theo_117 $p |- ( ( ( ~ A ) -> ( ~ ( ( ~ A ) -> ( B -> ( ~ A ) ) ) ) ) -> A )  
+$=
+
+wa
+wa nx0 wb wa nx0 ax0 ax0 
+wa nx0 wb ax1
+contrapose_1
+
+$.
+
+n_theo_118 $p |- ( ( ( ~ A ) -> ( ~ ( ( ~ A ) -> ( ~ A ) ) ) ) -> ( B -> A ) )
+$=
+
+wa nx0 wa nx0 wa nx0 ax0 nx0 ax0 wa ax0
+wa nx0 wa nx0 wa nx0 ax0 nx0 ax0 wb wa ax0 ax0
+
+wa
+wa nx0 wa nx0 ax0
+wa nx0 id_theo
+contrapose_1
+
+wa nx0 wa nx0 wa nx0 ax0 nx0 ax0 
+wa
+wb
+weaken_theo
+
+mopo
+
+$.
+
+n_theo_119 $p |- ( ( ( ~ A ) -> ( ~ B ) ) -> ( ( C -> B ) -> ( C -> A ) ) )
+$=
+
+wa nx0 wb nx0 ax0 
+wc wb wa ax0 ax0
+wc wb ax0 wc wa ax0 ax0
+
+wa nx0 wb nx0 ax0 wb wa ax0 ax0
+wa nx0 wb nx0 ax0 wc wb wa ax0 ax0 ax0
+
+wa wb ax3
+
+wa nx0 wb nx0 ax0 
+wb wa ax0 
+wc
+weaken_theo
+
+mopo
+
+wc wb wa ax2
+
+trans_theo_2
+
+$.
+
+n_theo_120 $p |- ( ( ( ~ A ) -> ( ~ B ) ) -> ( B -> ( C -> ( D -> C ) ) ) )
+$=
+wb wc wd wc ax0 ax0 ax0 
+wa nx0 wb nx0 ax0 
+wc wd wc ax0 ax0
+wb
+wc wd ax1
+prefix_theo
+prefix_theo
+$.
+
+n_theo_121 $p |- ( ( ( ~ A ) -> ( ~ B ) ) -> ( C -> ( D -> ( B -> A ) ) ) )
+$=
+
+wa nx0 wb nx0 ax0 wd wb wa ax0 ax0 ax0
+wa nx0 wb nx0 ax0 wc wd wb wa ax0 ax0 ax0 ax0
+
+wa nx0 wb nx0 ax0 wb wa ax0 ax0
+wa nx0 wb nx0 ax0 wd wb wa ax0 ax0 ax0
+
+wa wb ax3
+
+wa nx0 wb nx0 ax0 
+wb wa ax0
+wd
+weaken_theo
+
+mopo
+
+wa nx0 wb nx0 ax0 
+wd wb wa ax0 ax0
+wc
+weaken_theo
+
+mopo
+
+$.
+
+n_theo_122 $p |- ( ( ( ~ ( A -> ( B -> A ) ) ) -> ( ~ ( ~ C ) ) ) -> C )
+$=
+
+$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
