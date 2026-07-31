@@ -1016,10 +1016,10 @@ not_self
 not_self_
 |- ( ( ~ A ) -> A ) -> A
 
-dub_neg_1
+dub_neg_2
 |- ( A -> ( ~ ( ~ A ) ) )
 
-dub_neg 2
+dub_neg 1
 |- ( ( ~ ( ~ A ) ) -> A )
 
 
@@ -6426,11 +6426,11 @@ wb wc ax1
 prefix_theo
 $.
 
-self_not_ $p |- ( A -> ( ~ A ) ) -> ( A -> B )
+self_not_ $p |- ( ( A -> ( ~ A ) ) -> ( A -> B ) )
 $=
 
 wa wa nx0 wb ax0 ax0
-wa wa nx0 wb ax0 ax0 wa wa nx0 ax0 wa wb ax0 ax0 ax0
+wa wa nx0 ax0 wa wb ax0 ax0
 
 $( |- A -> ( ( ~ A ) -> B ) $)
 wa wb
@@ -6446,12 +6446,84 @@ mopo
 
 $.
 
+dub_neg_1 $p |- ( ( ~ ( ~ A ) ) -> A )
+$=
+
+wa nx0 nx0 wa nx0 nx0 wa ax0 ax0 
+wa nx0 nx0 wa ax0
+
+wa nx0 nx0 wa nx0 wa nx0 nx0 ax0 ax0
+wa nx0 nx0 wa nx0 nx0 wa ax0 ax0 
+
+wa nx0 nx0 
+wa nx0 
+ax1
+
+wa nx0 nx0 wa nx0 wa nx0 nx0 ax0 wa nx0 nx0 wa ax0 ax0 ax0 
+wa nx0 nx0 wa nx0 wa nx0 nx0 ax0 ax0 wa nx0 nx0 wa nx0 nx0 wa ax0 ax0 ax0 
+
+wa nx0 wa nx0 nx0 ax0 wa nx0 nx0 wa ax0 ax0 
+wa nx0 nx0 
+
+wa nx0 wa nx0 nx0 ax0
+wa nx0 wa ax0  
+wa nx0 nx0 wa ax0 
 
 
 
+$( ( ~A -> ~~A ) -> ( ~A -> A ) $)
+wa wa nx0 
+ax3
+
+$( ( ~A -> A ) -> ( ~~A -> A ) $)
+wa wa nx0 nx0
+n_not_self_self_
+
+
+
+
+$( ( ~A -> ~~A ) -> ( ~~A -> A ) $)
+trans_theo_2
+
+$( ~~A -> ( ( ~A -> ~~A ) -> ( ~~A -> A ) ) $)
+prefix_theo
+
+$( ( ~~A -> ( ( ~A -> ~~A ) -> ( ~~A -> A ) ) ) -> ( (~~A -> ( ~A -> ~~A ) ) -> (~~A -> ( ~~A -> A ) ) ) $)
+wa nx0 nx0
+wa nx0 wa nx0 nx0 ax0 
+wa nx0 nx0 wa ax0 
+ax2
+
+$( (~~A -> ( ~A -> ~~A ) ) -> (~~A -> ( ~~A -> A ) ) $)
+mopo
+
+$( (~~A -> ( ~~A -> A ) ) $)
+mopo
+
+wa nx0 nx0 wa
+strength_theo
+
+mopo
+
+$.
+
+n_theo_168 $p |- ( ( A -> ( ~ B ) ) -> ( A -> ( ~ B ) ) )
+$=
+wa wb nx0 ax0 id_theo
+$.
 
 
 $(
+
+double neg
+
+
+
+
+
+(~~A -> ( ~~A -> A ))
+( ~~A -> A )
+
 
 n_theo_166 $p |- ( ( ( ~ A ) -> A ) -> ( B -> A ) )
 $=
@@ -6543,10 +6615,7 @@ X -> ( ~ Y -> ~ X )
 $.
 $)
 
-n_theo_168 $p |- ( ( A -> ( ~ B ) ) -> ( A -> ( ~ B ) ) )
-$=
 
-$.
 
 
 
