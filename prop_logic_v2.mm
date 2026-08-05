@@ -137,9 +137,6 @@ if |- ( A -> B )
 if |- ( B -> A )
 then |- ( A <-> B )
 
-
-
-
 iff__a
 if |- ( A <-> B )
 then |- ( A -> B )
@@ -179,6 +176,47 @@ na_nb__iff
 if |- ( ~ A )
 if |- ( ~ B )
 then |- ( A <-> B )
+
+a_nb_naiffb
+if |- A
+if |- ( ~ B )
+then |- ( ~ ( A <-> B ) )
+
+na_b_naiffb
+if |- ( ~ A )
+if |- B
+then |- ( ~ ( A <-> B ) )
+
+
+*********************************************************************************************************
+
+
+a__aorb
+if |- A 
+then |- ( A V B )
+
+b__aorb
+if |- B 
+then |- ( A V B )
+
+aorb_na__b
+if |- ( A V B )
+if |- ( ~ A )
+then |- B
+
+aorb_nb__a
+if |- ( A V B )
+if |- ( ~ B )
+then |- A
+
+
+
+a_and_b__a 
+if |- A
+if |- B
+then |- A /\ B
+
+a_and_b__b
 
 
 
@@ -1284,7 +1322,7 @@ $)
 
 
 $( Declare the constant symbols we will use $)
-$c -> ( ) wff |- ~ <-> $.
+$c -> ( ) wff |- ~ <-> & V $.
 
 $( Declare the metavariables we will use $)
 $v A B C D E F X Y Z $.
@@ -1304,6 +1342,8 @@ $( Define "wff" $)
 nx0 $a wff ( ~ X ) $.
 ax0 $a wff ( X -> Y ) $. 
 axi $a wff ( X <-> Y ) $.
+axa $a wff ( X & Y ) $.
+axo $a wff ( X V Y ) $.
 
 $( State the axioms $)
 ax1 $a |- ( X -> ( Y -> X ) ) $. 	
@@ -1324,6 +1364,10 @@ def_iff $a |-
 -> 
 ( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
 ) $.
+
+def_or $a |- ( ( A V B ) <-> ( ( ~ A ) -> B ) ) $.
+
+def_and $a |- ( ( A & B ) <-> ( ~ ( A -> ( ~ B ) ) ) ) $.
 
 theo_0.1 $p wff ( A -> ( B -> A ) ) $=	
 wa wb wa ax0 ax0
@@ -7477,23 +7521,681 @@ $.
 
 $}
 
- 
+${ 
+aiffb $e |- ( A <-> B ) $.
+iff__a $p |- ( A -> B )
+$=
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wa wb ax0 
+
+$( |- ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) $)
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+
+aiffb
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a
+
+mopo
+
+mopo
+
+wa wb ax0
+wb wa ax0 
+a_and_b__a
+
+mopo
+
+$.
+
+$}
+
+
+${
+aiffb_ $e |- ( A <-> B ) $.
+iff__b $p |- ( B -> A ) 
+$=
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wb wa ax0 
+
+$( |- ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) $)
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+
+aiffb_
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a
+
+mopo
+
+mopo
+
+wa wb ax0
+wb wa ax0 
+a_and_b__b
+
+mopo
+
+$.
+
+$}
+
+
+${
+_a_ $e |- A $.
+_b_ $e |- B $.
+a_b__iff $p |- ( A <-> B )
+$=
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0  
+wa wb axi
+
+$( |- ( ~ ( A -> ( ~ B ) ) )   $)
+wb wa ax0 
+wa wb ax0 wb wa ax0 nx0 ax0 nx0
+
+wa
+wb
+_a_
+prefix_theo
+
+wa wb ax0 
+wb wa ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0
+
+wb
+wa
+_b_
+prefix_theo
+
+wa wb ax0 
+wb wa ax0
+a_b__a_and_b
+
+mopo
+
+mopo
+
+$( |- ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__b
+
+mopo
+
+mopo
+
+$.
+
+$}
+
+
+${
+__a__ $e |- A $.
+__aiffb__ $e |- ( A <-> B ) $.
+a_iff__b $p |- B 
+$=
+
+wa
+wb
+
+__a__
+
+$( |- A -> B $)
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wa wb ax0 
+
+$( |- ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) $)
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+
+__aiffb__
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a
+
+mopo
+
+mopo
+
+wa wb ax0
+wb wa ax0 
+a_and_b__a
+
+mopo
+
+mopo
+
+$.
+
+$}
+
+${
+__b__ $e |- B $.
+_aiffb_ $e |- ( A <-> B ) $.
+b_iff__a $p |- A
+$=
+
+wb
+wa
+
+__b__
+
+$( |- B -> A $)
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wb wa ax0 
+
+$( |- ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) $)
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+
+_aiffb_
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a  
+
+mopo
+
+mopo
+
+wa wb ax0
+wb wa ax0 
+a_and_b__b
+
+mopo
+
+mopo
+
+$.
+
+$}
+
+
+${
+
+iff1 $e |- ( A <-> B ) $. 
+iff_comm $p |- ( B <-> A ) 
+$=
+
+wb wa
+
+wa wb
+iff1
+iff__b
+
+wa wb
+iff1
+iff__a
+
+if_if__iff
+
+$.
+
+$}
+
+${
+iff1_ $e |- ( A <-> B ) $.
+iff2_ $e |- ( B <-> C ) $.
+iff_trans $p |- ( A <-> C )
+$=
+
+wa wc 
+
+wa wb wc
+
+wa wb
+iff1_
+iff__a
+
+wb wc
+iff2_
+iff__a
+
+trans_theo_2
+
+wc wb wa
+
+wb wc
+iff2_
+iff__b
+
+wa wb
+iff1_
+iff__b
+
+trans_theo_2
+
+if_if__iff
+
+$.
+$}
+
+iff_self $p |- ( A <-> A )
+$=
+wa wa
+wa id_theo
+wa id_theo
+if_if__iff
+$.
+
+
+${
+
+_na $e |- ( ~ A ) $.
+_nb $e |- ( ~ B ) $.
+
+na_nb__iff $p |- ( A <-> B )
+$=
+
+wa wb
+
+wa nx0
+wa wb ax0
+_na
+wa wb
+prdx_expl
+mopo
+
+wb nx0
+wb wa ax0
+_nb
+wb wa
+prdx_expl
+mopo
+
+if_if__iff
+
+$.
+
+$}
+
+${
+___a $e |- A $.
+___nb $e |- ( ~ B ) $.
+___naiffb $p |- ( ~ ( A <-> B ) )
+$=
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 
+wa wb axi nx0 
+
+$( ( ~ ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) ... ie. not A->B_and_B->A $)
+wa wb ax0 nx0 
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 
+
+$( |- ~ ( A -> B ) $)
+wb nx0
+wa wb ax0 nx0 
+
+___nb
+
+$( |- ( ~ B ) -> ( ~ ( A -> B ) ) $)
+
+wa wb ax0 wb ax0 
+wb nx0 wa wb ax0 nx0 ax0 
+
+$( |- ( A -> B ) -> B $)
+wa
+wa wb ax0 wb ax0 
+
+___a
+
+$( |- A -> ( ( A -> B ) -> B ) $)
+wa wb
+condense_mopo
+
+mopo
+
+wa wb ax0 wb
+rev_ax3
+
+mopo
+
+mopo
+
+$( |- ( ~ ( A -> B ) ) -> ( ~ ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb ax0 ax0 
+wa wb ax0 nx0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 ax0
+
+$( |- ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A -> B )   $)
+wa wb ax0 wb wa ax0  
+a_and_b__a
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wa wb ax0
+rev_ax3
+
+mopo
+
+mopo
+
+$( |- ( ~ ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) -> ( ~ ( A <-> B ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 wa wb axi nx0 ax0
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a
+
+mopo
+
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+rev_ax3
+
+mopo
+
+mopo
+
+$.
+$}
+
+${
+
+na__ $e |- ( ~ A ) $.
+b__ $e |- B $.
+naiffb__ $p |- ( ~ ( A <-> B ) ) $=
+
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 
+wa wb axi nx0 
+
+
+$( ~ ( A->B & B->A ) $)
+wb wa ax0 nx0 
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0
+
+$( ~ ( B -> A ) $)
+wa nx0 
+wb wa ax0 nx0 
+
+na__
+
+wb wa ax0 wa ax0 
+wa nx0 wb wa ax0 nx0 ax0 
+
+$( |- ( B -> A ) -> A $)
+wb
+wb wa ax0 wa ax0 
+
+b__
+
+$( |- B -> ( ( B -> A ) -> A ) $)
+wb wa 
+condense_mopo
+
+mopo
+
+wb wa ax0 wa
+rev_ax3
+
+mopo
+
+mopo
 
 
 
+$( ~ ( A->B & B->A ) $)
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wb wa ax0 ax0
+wb wa ax0 nx0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 ax0 
+
+wa wb ax0 
+wb wa ax0 
+a_and_b__b
+
+
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+wb wa ax0 
+rev_ax3
+
+mopo
+
+mopo
+
+$( ~ ( A <-> B ) $)
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 nx0 wa wb axi nx0 ax0
+
+
+$( |- ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) $)
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0 wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0 nx0 ax0 nx0
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0  
+
+$( |- 
+( ~ 
+( ( ( A <-> B ) -> ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) ) 
+-> 
+( ~ ( ( ~ ( ( A -> B ) -> ( ~ ( B -> A ) ) ) ) -> ( A <-> B ) ) ) ) 
+) $)
+wa wb
+def_iff
+
+wa wb axi wa wb ax0 wb wa ax0 nx0 ax0 nx0 ax0    
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 wa wb axi ax0
+a_and_b__a
+
+mopo
+
+
+wa wb axi
+wa wb ax0 wb wa ax0 nx0 ax0 nx0 
+rev_ax3
+
+mopo
+
+mopo
+
+$.
+$}
+
+
+${
+a____ $e |- A $.
+a__aorb $p |- ( A V B )
+$=
+
+wa nx0 wb ax0 
+wa wb axo
+
+$( |- ( ~ A ) -> B $)
+wa 
+wa nx0 wb ax0 
+
+a____
+
+$( |- A -> ( ( ~ A ) -> B ) $)
+wa wb
+prdx_expl_
+
+mopo
+
+$( |- ( ( ~ A ) -> B ) -> ( A V B ) $)
+
+wa wb axo 
+wa nx0 wb ax0
+
+$( |- ( A V B ) <-> ( ( ~ A ) -> B ) $)
+wa wb
+def_or
+  
+iff__b
+
+mopo
+
+$.
+
+$}
+
+
+${
+
+b____ $e |- B $.
+b__aorb $p |- ( A V B )
+$=
+
+wa nx0 wb ax0 
+wa wb axo
+
+$( |- ( ~ A ) -> B $)
+wb 
+wa nx0 wb ax0 
+
+b____
+
+$( |- B -> ( ( ~ A ) -> B ) $)
+wb wa nx0
+ax1
+
+mopo
+
+$( |- ( ( ~ A ) -> B ) -> ( A V B ) $)
+
+wa wb axo 
+wa nx0 wb ax0
+
+$( |- ( A V B ) <-> ( ( ~ A ) -> B ) $)
+wa wb
+def_or
+  
+iff__b
+
+mopo
+
+$.
+
+$}
+
+
+${
+aorb $e |- ( A V B ) $.
+nota $e |- ( ~ A ) $.
+aorb_na__b $p |- B
+$=
+
+wa nx0
+wb
+
+nota
+
+wa wb axo
+wa nx0 wb ax0 
+
+aorb
+
+$( |- ( ( A V B ) -> ( ( ~ A ) -> B ) ) $)
+
+wa wb axo 
+wa nx0 wb ax0
+
+$( |- ( A V B ) <-> ( ( ~ A ) -> B ) $)
+wa wb
+def_or
+  
+iff__a
+
+mopo
+
+mopo
+
+$.
+$}
+
+
+${
+aorb $e |- ( A V B ) $.
+notb $e |- ( ~ B ) $.
+aorb_nb__a $p |- A
+$=
 
 
 
-
-
-
-
-
-
-
-
-
-
+$.
+$}
 
 
 
