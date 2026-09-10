@@ -1,4 +1,4 @@
-$c ) ( -> |- wff ~ <-> & $.
+$c ) ( -> |- wff ~ <-> & V $.
 
 $v A B C D E F W X Y Z $.
 
@@ -21,11 +21,14 @@ ax3 $a |- ( ( ~ W -> ~ X ) -> ( X -> W ) ) $.
 
 iffx0 $a wff ( W <-> X ) $.
 andx0 $a wff ( W & X ) $.
+orex0 $a wff ( W V X ) $.
 
 iff_def $a |- ~ ( ( ( W <-> X ) -> ~ ( ( W -> X ) -> ~ ( X -> W ) ) ) 
 -> ~ ( ~ ( ( W -> X ) -> ~ ( X -> W ) ) -> ( W <-> X ) ) ) $.
 
 and_def $a |- ( ( W & X ) <-> ~ ( W -> ~ X ) ) $.
+
+ore_def $a |- ( ( W V X ) <-> ( ~ W -> X ) ) $.
 
 ${
 1st_ $e |- W $.
@@ -317,15 +320,17 @@ and_assoc_2
 and_assoc_12
 ( ( A & B ) & C ) <-> ( A & ( B & C ) )
 
-*********************************************************************************************************
-
 a__aorb
 if |- A 
 then |- ( A V B )
 
+a__aorb_ |- A -> ( A V B )
+
 b__aorb
 if |- B 
 then |- ( A V B )
+
+b__aorb_ |- B -> ( A V B )
 
 aorb_na__b
 if |- ( A V B )
@@ -337,25 +342,62 @@ if |- ( A V B )
 if |- ( ~ B )
 then |- A
 
-aorb_com_
-|- ( A V B ) -> ( B V A )
-
 aorb_comm
 if |- ( A V B )
 then |- ( B V A )
 
-aorb_assoc
+aorb_comm_
+|- ( A V B ) -> ( B V A )
+
+lem
+|- ( A V ~ A )
+
+lem2
+|- ( ~ A V A )
+
+aora__a
+|- ( A V A ) -> A
+
+no_contradiction 
+|- ~ ( A & ~ A )
+
+if |- ( A -> B )
+if |- ( A -> ~ B )
+ab_anb__na |- ~ A
+
+if |- ~ ( A -> B ) 
+n_aimpb__aimpnb |- ( A -> ~ B )
+
+if |- ( A -> B )
+if |- ( A -> C ) 
+aib_aic__aibc |- ( A -> ( B & C ) )
+
+*********************************************************************************************************
+
+or_assoc_1 |- ( ( A V B ) V C ) -> ( A V ( B V C ) ) 
+
+or_assoc_2 |- ( A V ( B V C ) ) -> ( ( A V B ) V C ) 
+
+or_assoc_12
 |- ( ( A V B ) V C ) <-> ( A V ( B V C ) )
+
+lem_imp
+if |- A -> B
+if |- ~ A -> B
+then |- B
 
 disj_imp
 if |- A -> C
 if |- B -> C 
 then |- ( A V B ) -> C  
 
-
+andor__andorand
 A & ( B V C ) <-> ( A & B ) V ( A & C )
+orand__orandor
 A V ( B & C ) <-> ( A V B ) & ( A V C )
+nand__norn
 ~ ( A & B ) <-> ( ~ A V ~ B )
+nor__nandn
 ~ ( A V B ) <-> ( ~ A & ~ B )
 
 **********************************************************************************************************
@@ -3352,6 +3394,384 @@ if_if__iff
 
 $.
 
+${
+
+_ifa_ $e |- A $.
+a__aorb $p |- ( A V B )
+$=
+
+wa
+wa wb orex0
+
+_ifa_
+
+wa 
+wa nx0 wb ax0
+wa wb orex0
+
+$( A -> ( ~ A -> B ) $)
+wa wb
+prdx_expl_
+
+$( ( ~ A -> B ) -> ( A V B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__b
+
+trans_theo_2
+
+mopo
+
+$.
+
+$}
+
+a__aorb_ $p |- ( A -> ( A V B ) )
+$=
+wa 
+wa nx0 wb ax0
+wa wb orex0
+
+$( A -> ( ~ A -> B ) $)
+wa wb
+prdx_expl_
+
+$( ( ~ A -> B ) -> ( A V B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__b
+
+trans_theo_2
+$.
+
+${
+
+_ifb_ $e |- B $.
+b__aorb $p |- ( A V B )
+$=
+
+wb
+wa wb orex0
+
+_ifb_
+
+wb 
+wa nx0 wb ax0
+wa wb orex0
+
+$( B -> ( ~ A -> B ) $)
+wb wa nx0
+ax1
+
+$( ( ~ A -> B ) -> ( A V B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__b
+
+trans_theo_2
+
+mopo
+
+$.
+
+$}
+
+b__aorb_ $p |- ( B -> ( A V B ) )
+$=
+
+wb 
+wa nx0 wb ax0
+wa wb orex0
+
+$( B -> ( ~ A -> B ) $)
+wb wa nx0
+ax1
+
+$( ( ~ A -> B ) -> ( A V B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__b
+
+trans_theo_2
+
+$.
+
+${
+_a_or_b_ $e  |- ( A V B ) $.
+_na_ $e |- ~ A $.
+aorb_na__b $p |- B 
+$=
+
+wa nx0
+wb
+
+_na_
+
+$( ~ A -> B $)
+wa wb orex0
+wa nx0 wb ax0
+
+_a_or_b_
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__a
+
+mopo
+
+mopo
+
+$.
+$}
+
+${
+_a_or_b__ $e |- ( A V B ) $.
+_nb__ $e |- ~ B $.
+aorb_nb__a $p |- A 
+$=
+
+wa nx0 nx0
+wa
+
+wb nx0
+wa nx0 nx0
+
+_nb__
+
+$( ~ B -> ~ ~ A $)
+wa nx0 wb ax0
+wb nx0 wa nx0 nx0 ax0
+
+$( ~ A -> B $)
+
+wa wb orex0
+wa nx0 wb ax0
+
+_a_or_b__
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__a
+
+mopo
+
+$( ( ~ A -> B ) -> ( ~ B -> ~ ~ A ) $)
+wa nx0 wb
+rev_ax3
+
+mopo
+
+mopo
+
+wa
+dub_neg_1
+
+mopo
+
+$.
+$}
+
+${
+
+__a_or_b $e |- ( A V B ) $.
+aorb_comm $p |- ( B V A )
+$=
+
+wa wb orex0
+wb wa orex0
+
+__a_or_b
+
+wa wb orex0
+wb nx0 wa ax0
+wb wa orex0
+
+$( ( A V B ) -> ( ~ B -> A ) $)
+wa wb orex0
+wa nx0 wb ax0
+wb nx0 wa ax0 
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__a
+
+$( ( ~ A -> B ) -> ( ~ B -> A ) $)
+wa wb
+na_b_nb_a
+
+trans_theo_2
+
+$( ( ~ B -> A ) -> ( B V A ) $)
+wb wa orex0 wb nx0 wa ax0
+wb wa
+ore_def
+iff__b
+
+trans_theo_2
+
+mopo
+
+$.
+
+$}
+
+aorb_comm_ $p |- ( ( A V B ) -> ( B V A ) )
+$=
+
+wa wb orex0
+wb nx0 wa ax0
+wb wa orex0
+
+$( ( A V B ) -> ( ~ B -> A ) $)
+wa wb orex0
+wa nx0 wb ax0
+wb nx0 wa ax0 
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0 wa nx0 wb ax0
+wa wb
+ore_def
+iff__a
+
+$( ( ~ A -> B ) -> ( ~ B -> A ) $)
+wa wb
+na_b_nb_a
+
+trans_theo_2
+
+$( ( ~ B -> A ) -> ( B V A ) $)
+wb wa orex0 wb nx0 wa ax0
+wb wa
+ore_def
+iff__b
+
+trans_theo_2
+
+$.
+
+lem $p |- ( A V ~ A )
+$=
+
+wa nx0 wa nx0 ax0
+wa wa nx0 orex0
+
+$( ~ A -> ~ A $)
+wa nx0
+id_theo
+
+
+$( ( ~ A -> ~ A ) -> ( A V ~ A )  $)
+wa wa nx0 orex0 
+wa nx0 wa nx0 ax0 
+
+wa wa nx0
+ore_def
+
+iff__b
+
+mopo
+
+$.
+
+lem2 $p |- ( ~ A V A )
+$=
+
+wa wa nx0 
+
+wa
+lem
+
+aorb_comm
+
+$.
+
+
+aora__a $p |- ( ( A V A ) -> A )
+$=
+
+wa wa orex0
+wa nx0 wa ax0
+wa
+
+$( ( A V A ) -> ( ~ A -> A ) $)
+
+wa wa orex0
+wa nx0 wa ax0 
+
+wa wa 
+ore_def
+
+iff__a
+
+$( ( ~ A -> A ) -> A $)
+wa
+na_a__a
+
+trans_theo_2
+
+$.
+
+no_contradiction $p |- ~ ( A & ~ A )
+$=
+
+wa wa nx0 nx0 ax0
+wa wa nx0 andx0 nx0
+
+$( ( A -> ~ ~ A ) $)
+wa
+dub_neg_2
+
+$( ( A -> ~ ~ A ) -> ~ ( A & ~ A ) $)
+wa wa nx0 nx0 ax0
+wa wa nx0 nx0 ax0 nx0 nx0
+wa wa nx0 andx0 nx0
+
+$( ( A -> ~ ~ A ) -> ~ ~ ( A -> ~ ~ A ) $)
+wa wa nx0 nx0 ax0
+dub_neg_2
+
+$( ( ~ ~ ( A -> ~ ~ A ) ) -> ~ ( A & ~ A ) $)
+wa wa nx0 andx0 wa wa nx0 nx0 ax0 nx0 ax0
+wa wa nx0 nx0 ax0 nx0 nx0 wa wa nx0 andx0 nx0 ax0
+
+$( |- ( A & ~ A ) -> ~ ( A -> ~ ~ A ) $)
+
+wa wa nx0 andx0
+wa wa nx0 nx0 ax0 nx0
+
+wa wa nx0
+and_def
+
+iff__a
+
+$( |- ( ( A & ~ A ) -> ~ ( A -> ~ ~ A ) ) -> ( ~ ~ ( A -> ~ ~ A ) ) -> ~ ( A & ~ A ) $)
+wa wa nx0 andx0 
+wa wa nx0 nx0 ax0 nx0
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+mopo
+
+$.
+
+
+
+
+
+$( ****************************************************************************************** $)
 
 
 
@@ -3360,12 +3780,329 @@ $.
 
 
 
+${
+
+ab___ $e |- ( A -> B ) $.
+anb__ $e |- ( A -> ~ B ) $.
+ab_anb__na $p |- ~ A 
+$=
+
+wa wa nx0 ax0 
+wa nx0
+
+$( A -> ~ A $)
+wa
+wb nx0
+wa nx0
+
+anb__
+
+$( ~ B -> ~ A $)
+wa wb ax0
+wb nx0 wa nx0 ax0
+
+ab___
+
+$( ( A -> B ) -> ( ~ B -> ~ A ) $)
+wa wb
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+$( ( A -> ~ A ) -> ~ A $)
+wa
+a_na__na
+
+mopo
+
+$.
+
+$}
+
+
+${ 
+n_aimpb $e |- ~ ( A -> B ) $.
+n_aimpb__aimpnb $p |- ( A -> ~ B )
+$=
+
+wb nx0
+wa
+
+$( ~ B $)
+wb
+wa wb ax0
+
+$( B -> ( A -> B ) $)
+wb wa ax1
+
+$( B -> ~ ( A -> B ) $)
+wa wb ax0 nx0
+wb
+
+n_aimpb
+prefix_theo
+$( A -> B ; A -> ~ B |- ~ A $)
+ab_anb__na
+
+prefix_theo
+
+$.
+$}
 
 
 
 
+$(
+
+show 
+( A -> ~ B )
+<->
+~ ( A -> B )
+
+have A -> ~ B
+( A -> B ) -> ( A -> ~ B ) prefix theo
 
 
+show? ( A -> B ) -> ~ ( A -> ~ B ) ?
+
+have
+~ A -> ( A -> B )
+~ ( A -> B ) -> A 
+
+~ A -> ( A -> ~ B )
+~ ( A -> ~ B ) -> A 
+
+
+fix
+~ ( A -> B )
+
+have
+~ A -> ( A -> B )
+~ ( A -> B ) -> A 
+A
+
+assume 
+B
+then
+A -> B
+
+ie. 
+given ~ ( A -> B )
+we have 
+B -> ~ ( A -> B ) prefix_theo
+and
+B -> ( A -> B ) ax1
+so 
+~ B ab_anb__na 
+so A -> ~ B prefix_theo
+
+$)
+
+
+
+$( RENAME $)
+
+${
+
+if1___ $e |- ( A -> B ) $.
+if2___ $e |- ( A -> C ) $. 
+aib_aic__aibc $p |- ( A -> ( B & C ) )  
+$=
+
+$( A -> ( B & C ) $)
+wa wc ax0
+wa wb wc andx0 ax0 
+
+if2___
+
+$( ( A -> C ) -> ( A -> ( B & C ) ) $)
+wa wc wb wc andx0 ax0 ax0
+wa wc ax0 wa wb wc andx0 ax0 ax0
+
+$( A -> ( C -> ( B & C ) ) $)
+wa 
+wb 
+wc wb wc andx0 ax0
+
+if1___
+
+$( B -> ( C -> ( B & C ) )  $)
+wb wc
+a_b__aandb
+
+trans_theo_2
+
+$( ( A -> ( C -> ( B & C ) ) ) -> ( ( A -> C ) -> ( A -> ( B & C ) ) ) $)
+wa
+wc
+wb wc andx0
+ax2
+
+mopo
+
+mopo
+
+$.
+
+$}
+
+
+$(
+A -> B
+<->
+A -> ~ ~ B 
+$)
+
+${
+
+if1_ $e |- ( A -> C ) $.
+if2_ $e |- ( B -> C ) $.
+disj_imp $p |- ( ( A V B ) -> C ) 
+$=
+
+wa wb orex0
+wa nx0 wb ax0
+wc
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0 wa nx0 wb ax0 
+wa wb
+ore_def
+iff__a
+
+$( ( ~ A -> B ) -> C $)
+wa nx0 wb ax0 
+wa nx0 wb nx0 nx0 ax0 
+wc
+
+$( ( ~ A -> B ) -> ( ~ A -> ~ ~ B ) $)
+wa nx0 wb wb nx0 nx0 ax0 ax0 
+wa nx0 wb ax0     wa nx0 wb nx0 nx0 ax0 ax0 
+
+$( ~ A -> ( B -> ~ ~ B ) $)
+wb wb nx0 nx0 ax0
+wa nx0
+
+$( B -> ~ ~ B $)
+wb
+dub_neg_2
+
+prefix_theo
+
+$( ( ~ A -> ( B -> ~ ~ B ) ) -> ( ( ~ A -> B ) -> ( ~ A -> ~ ~ B ) )  $)
+wa nx0 wb wb nx0 nx0
+ax2
+
+mopo
+
+$( ( ~ A -> ~ ~ B ) -> C $)
+wc nx0 wa nx0 wb nx0 nx0 ax0 nx0 ax0 
+wa nx0 wb nx0 nx0 ax0 wc ax0 
+
+$( ~ C -> ~ ( ~ A -> ~ ~ B ) $)
+wc nx0
+wa nx0 wb nx0 andx0
+wa nx0 wb nx0 nx0 ax0 nx0 $( HERE $)
+
+
+
+
+$( ~ C -> ( ~ A & ~ B )  $)
+wc nx0
+wa nx0
+wb nx0
+
+$( ( ~ C -> ~ A ) $)
+wa wc ax0
+wc nx0 wa nx0 ax0
+
+if1_
+
+$( ( A -> C ) -> ( ~ C -> ~ A ) $)
+wa wc
+rev_ax3
+
+$( ( ~ C -> ~ A ) $)
+mopo
+
+$( ( ~ C -> ~ B ) $)
+wb wc ax0
+wc nx0 wb nx0 ax0
+
+if2_
+
+$( ( B -> C ) -> ( ~ C -> ~ B ) $)
+wb wc
+rev_ax3
+
+$( ( ~ C -> ~ B ) $)
+mopo
+
+aib_aic__aibc
+
+
+
+
+$( ( ~ A & ~ B ) -> ~ ( ~ A -> ~ ~ B ) $)
+wa nx0 wb nx0 andx0
+wa nx0 wb nx0 nx0 ax0 nx0 
+
+$( ( ~ A & ~ B ) <-> ~ ( ~ A -> ~ ~ B )  $)
+wa nx0 wb nx0
+and_def
+
+$( ( ~ A & ~ B ) -> ~ ( ~ A -> ~ ~ B ) $)
+iff__a
+
+$( ~ C -> ~ ( ~ A -> ~ ~ B ) $)
+trans_theo_2
+
+$( ( ~ C -> ~ ( ~ A -> ~ ~ B ) ) -> ( ( ~ A -> ~ ~ B ) -> C ) $)
+wc
+wa nx0 wb nx0 nx0 ax0 
+ax3
+
+mopo
+
+trans_theo_2
+
+trans_theo_2
+
+$.
+
+$}
+
+
+$( REVIEW CONTRADICTION STUFF
+~ C -> ~ ( ~ A -> B )
+
+( A -> C ) -> ( ~ C -> ~ A )
+( B -> C ) -> ( ~ C -> ~ B ) 
+
+( ~ C -> ~ A )
+( ~ C -> ~ B ) 
+
+~ C -> ( ~ A -> ~ B ) ?->? ~ ( ~ A -> B )
+~ C -> ( B -> A )
+
+( X -> Y ) -> ~ ( X -> ~ Y ) 
+
+
+( X -> Y ) -> ( ( X -> ~ Y ) -> ~ X )
+
+|- ( Y -> ( ~ Y -> ~ X )
+|- X -> ( Y -> ( ~ Y -> ~ X )
+|- ( X -> Y ) -> ( X -> ( ~ Y -> ~ X ) )
+|- ( X -> Y ) -> ( ( X -> ~ Y ) -> ( X -> ~ X ) )
+|- ( X -> ~ X ) -> ~ X
+|- ( X -> Y ) -> ( ( X -> ~ Y ) -> ~ X )
+
+
+( A -> ~ B ) -> ~ ( A -> B )
+
+$)
 
 
 
