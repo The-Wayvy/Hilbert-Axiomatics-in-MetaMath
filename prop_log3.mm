@@ -320,6 +320,11 @@ if |- ( ~ A )
 if |- B
 then |- ( ~ ( A <-> B ) )
 
+replace_if
+if |- ( A <-> C )
+if |- ( B <-> D )
+then |- ( A -> B ) -> ( C -> D )
+
 a_b__aandb_ 
 if |- A
 if |- B
@@ -490,6 +495,8 @@ then |- ~ ( A V B )
 
 *********************************************************************************************************
 
+exi_def_rev 
+|- ( ~ ( @l. x ~ P ) <-> ( EX. x P ) ) $.
 
 pred_theo_1
 |- ( @l. x ( P -> P ) )
@@ -602,7 +609,6 @@ pred_theo_32
 pred_theo_33
 |- ( ( @l. x ( P -> Q ) ) -> ( ( @l. x ( Q -> R ) ) -> ( @l. x ( P -> R ) ) ) )
 
-
 pred_theo_34
 |- ( ( @l. x ( P & Q ) ) -> ( @l. x ( Q & P ) ) )
 
@@ -617,6 +623,59 @@ pred_theo_37
 
 pred_theo_38
 |- ( @l. x ~ ( ( P' x ) & ~ ( P' x ) ) )
+
+pred_theo_39
+|- ( ( EX. x P ) -> ~ ( @l. x ~ P ) )
+
+pred_theo_40
+|- ( ~ ( @l. x ~ P ) -> ( EX. x P ) )
+
+pred_theo_41
+|- ( ( @l. x ~ P ) -> ~ ( EX. x P ) )
+
+pred_theo_42 
+|- ( ~ ( EX. x P ) -> ( @l. x ~ P ) )
+
+pred_theo_43
+|- ( ( @l. x ~ P ) <-> ~ ( EX. x P ) )
+
+pred_theo_44 
+|- ( ( @l. x P ) -> ~ ( EX. x ~ P ) )
+
+pred_theo_45 
+|- ( ~ ( EX. x ~ P ) -> ( @l. x P ) )
+
+pred_theo_46 
+|- ( ( @l. x P ) <-> ~ ( EX. x ~ P ) ) 
+
+pred_theo_47
+|- ( ( EX. x ~ P ) -> ~ ( @l. x P ) )
+
+pred_theo_48
+|- ( ~ ( @l. x P ) -> ( EX. x ~ P ) )
+
+pred_theo_49
+|- ( ( EX. x ~ P ) <-> ~ ( @l. x P ) )
+
+pred_theo_50 
+|- ( ~ ( EX. x P ) <-> ( @l. x ~ P ) )
+
+pred_theo_53
+|- ( ~ ( @l. x P ) <-> ( EX. x ~ P ) )
+
+pred_theo_56
+|- ( ( @l. x ( P' x ) ) -> ~ ( EX. x ~ ( P' x ) ) )
+
+pred_theo_57
+|- ( ~ ( EX. x ~ ( P' x ) ) -> ( @l. x ( P' x ) ) )
+
+pred_theo_58
+|- ( ( @l. x ( P' x ) ) <-> ~ ( EX. x ~ ( P' x ) ) )
+
+pred_theo_59
+|- ( ( @l. ( P -> Q ) ) -> ( ( EX. x P ) -> ( EX. x Q ) ) ) 
+
+
 
 *********************************************************************************************************
 
@@ -3016,7 +3075,66 @@ $( ~ ( A <-> B ) $)
 mopo
 
 $.
+
 $}
+
+${
+
+iff_1 $e |- ( A <-> C ) $.
+iff_2 $e |- ( B <-> D ) $.
+replace_if $p |- ( ( A -> B ) -> ( C -> D ) )
+$=
+
+wa wb ax0 
+wc wb ax0 
+wc wd ax0 
+
+$( ( A -> B ) -> ( C -> B ) $)
+wc wa ax0
+wa wb ax0 wc wb ax0 ax0 
+
+$( C -> A $)
+wa wc
+iff_1
+iff__b
+
+$( |- ( ( C -> A ) -> ( ( A -> B ) -> ( C -> B ) ) ) $)
+wc wa wb
+trans_theo_4 
+
+mopo
+
+$( ( ( C -> B ) -> ( C -> D ) ) $)
+wc wb ax0 wb wd ax0 wc wd ax0 ax0 ax0 
+wc wb ax0 wc wd ax0 ax0 
+
+$( ( C -> B ) -> ( ( B -> D ) -> ( C -> D ) ) $)
+wc wb wd 
+trans_theo_4 
+
+$( ( ( C -> B ) -> ( ( B -> D ) -> ( C -> D ) ) )
+-> ( ( C -> B ) -> ( C -> D ) ) $)
+
+wc wb ax0 
+wb wd ax0 
+wc wd ax0 
+
+$( B -> D $)
+wb wd
+iff_2
+iff__a
+
+simple_theo
+
+mopo
+
+trans_theo_2
+
+$.
+
+$}
+
+
 
 ${
 if_a_ $e |- A $.
@@ -5191,6 +5309,40 @@ $.
 
 $}
 
+
+exi_def_rev $p |- ( ~ ( @l. x ~ P ) <-> ( EX. x P ) )
+$=
+
+vx wp nx0 axa nx0
+vx wp axe 
+
+$( ( ~ ( @l. x ~ P ) -> ( EX. x P ) ) $)
+
+vx wp axe 
+vx wp nx0 axa nx0
+
+$( ( ( EX. x P ) <-> ~ ( @l. x ~ P ) ) $)
+vx wp 
+exi_def
+
+iff__b
+
+$( ( ( EX. x P ) -> ~ ( @l. x ~ P ) ) $)
+
+vx wp axe 
+vx wp nx0 axa nx0 
+
+$( ( ( EX. x P ) <-> ~ ( @l. x ~ P ) ) $)
+vx wp 
+exi_def
+
+iff__a
+
+if_if__iff
+
+$.
+
+
 pred_theo_1 $p |- ( @l. x ( P -> P ) )
 $=
 
@@ -5908,6 +6060,597 @@ no_contradiction
 gnrl
 
 $.
+
+pred_theo_39 $p |- ( ( EX. x P ) -> ~ ( @l. x ~ P ) )
+$=
+
+vx wp axe
+vx wp nx0 axa nx0 
+
+$( |- ( ( EX. x P ) <-> ~ ( @l. x ~ P ) ) $)
+vx wp
+exi_def 
+
+iff__a
+
+$.
+
+pred_theo_40 $p |- ( ~ ( @l. x ~ P ) -> ( EX. x P ) )
+$=
+
+vx wp axe
+vx wp nx0 axa nx0 
+
+$( |- ( ( EX. x P ) <-> ~ ( @l. x ~ P ) ) $)
+vx wp
+exi_def 
+
+iff__b
+
+$.
+
+pred_theo_41 $p |- ( ( @l. x ~ P ) -> ~ ( EX. x P ) )
+$=
+
+vx wp nx0 axa
+vx wp nx0 axa nx0 nx0 
+vx wp axe nx0 
+
+$( ( @l. x ~ P ) -> ~ ~ ( @l. x ~ P ) $)
+vx wp nx0 axa
+dub_neg_2
+
+$( ( ~ ~ ( @l. x ~ P ) -> ~ ( EX. x P ) ) $)
+vx wp axe vx wp nx0 axa nx0 ax0
+vx wp nx0 axa nx0 nx0 vx wp axe nx0 ax0 
+
+$( ( ( EX. x P ) -> ~ ( @l. x ~ P ) ) $)
+vx wp
+pred_theo_39
+
+$( ( ( EX. x P ) -> ~ ( @l. x ~ P ) ) -> ( ~ ~ ( @l. x ~ P ) -> ~ ( EX. x P ) ) $)
+vx wp axe vx wp nx0 axa nx0  
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+$.
+
+pred_theo_42 $p |- ( ~ ( EX. x P ) -> ( @l. x ~ P ) )
+$=
+
+
+vx wp nx0 axa nx0  vx wp axe ax0 
+vx wp axe nx0  vx wp nx0 axa ax0 
+
+$( ( ~ ( @l. x ~ P ) -> ( EX. x P ) ) $)
+vx wp 
+pred_theo_40
+
+$( ( ~ ( @l. x ~ P ) -> ( EX. x P ) ) -> ( ~ ( EX. x P ) -> ( @l. x ~ P ) ) $)
+vx wp nx0 axa
+vx wp axe
+na_b_nb_a
+
+mopo
+
+$.
+
+pred_theo_43 $p |- ( ( @l. x ~ P ) <-> ~ ( EX. x P ) )
+$=
+
+vx wp nx0 axa 
+vx wp axe nx0 
+
+vx wp
+pred_theo_41
+
+vx wp
+pred_theo_42
+
+if_if__iff
+
+$.
+
+pred_theo_44 $p |- ( ( @l. x P ) -> ~ ( EX. x ~ P ) )
+$=
+
+vx wp axa
+vx wp nx0 nx0 axa
+vx wp nx0 axe nx0 
+
+$( ( @l. x P ) -> ( @l. x ~ ~ P ) $)
+vx wp 
+pred_theo_20
+
+$( ( @l. x ~ ~ P ) -> ~ ( EX. x ~ P ) $)
+vx wp nx0 
+pred_theo_41
+
+trans_theo_2
+
+$.
+
+pred_theo_45 $p |- ( ~ ( EX. x ~ P ) -> ( @l. x P ) )
+$=
+
+$( ~ ( EX. x ~ P ) -> ( @l. x P ) $)
+vx wp nx0 axe nx0 
+vx wp nx0 nx0 axa
+vx wp axa
+
+$( ( ~ ( EX. x ~ P ) -> ( @l. x ~ ~ P )  $)
+vx wp nx0 
+pred_theo_42
+
+$( ( @l. x ~ ~ P ) -> ( @l. x P ) $)
+
+vx
+wp nx0 nx0
+wp
+
+$( ~ ~ P -> P $)
+wp
+dub_neg_1
+
+pred_theo_18
+
+trans_theo_2
+
+$.
+
+pred_theo_46 $p |- ( ( @l. x P ) <-> ~ ( EX. x ~ P ) ) 
+$=
+
+vx wp axa
+vx wp nx0 axe nx0 
+
+vx wp
+pred_theo_44
+
+vx wp
+pred_theo_45
+
+if_if__iff
+
+$.
+
+pred_theo_47 $p |- ( ( EX. x ~ P ) -> ~ ( @l. x P ) )
+$=
+
+vx wp nx0 axe
+vx wp nx0 axe nx0 nx0 
+vx wp axa nx0 
+
+$( ( EX. x ~ P ) -> ~ ~ ( EX. x ~ P ) $)
+vx wp nx0 axe
+dub_neg_2
+
+$( ( ~ ~ ( EX. x ~ P ) -> ~ ( @l. x P ) ) $)
+vx wp axa vx wp nx0 axe nx0 ax0
+vx wp nx0 axe nx0 nx0 vx wp axa nx0 ax0 
+
+$( |- ( ( @l. x P ) -> ~ ( EX. x ~ P ) ) $)
+vx wp
+pred_theo_44
+
+$( |- ( ( @l. x P ) -> ~ ( EX. x ~ P ) ) -> ( ~ ~ ( EX. x ~ P ) -> ~ ( @l. x P ) ) $)
+vx wp axa 
+vx wp nx0 axe nx0 
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+$.
+
+pred_theo_48 $p |- ( ~ ( @l. x P ) -> ( EX. x ~ P ) )
+$=
+
+vx wp axa nx0 
+vx wp nx0 axe nx0 nx0
+vx wp nx0 axe 
+
+$( ( ~ ( @l. x P ) -> ~ ~ ( EX. x ~ P ) ) $)
+vx wp nx0 axe nx0 vx wp axa ax0
+vx wp axa nx0 vx wp nx0 axe nx0 nx0 ax0 
+
+$( |- ( ~ ( EX. x ~ P ) -> ( @l. x P ) ) $)
+vx wp 
+pred_theo_45
+
+$( |- ( ~ ( EX. x ~ P ) -> ( @l. x P ) ) -> ( ~ ( @l. x P ) -> ~ ~ ( EX. x ~ P ) ) $)
+vx wp nx0 axe nx0 
+vx wp axa 
+rev_ax3
+
+mopo
+
+$( ~ ~ ( EX. x ~ P ) -> ( EX. x ~ P ) $)
+vx wp nx0 axe
+dub_neg_1
+
+trans_theo_2
+
+$.
+
+pred_theo_49 $p |- ( ( EX. x ~ P ) <-> ~ ( @l. x P ) )
+$=
+
+vx wp nx0 axe
+vx wp axa nx0 
+
+vx wp
+pred_theo_47
+
+vx wp
+pred_theo_48
+
+if_if__iff
+
+$.
+
+pred_theo_50 $p |- ( ~ ( EX. x P ) <-> ( @l. x ~ P ) )
+$=
+
+vx wp axe nx0
+vx wp nx0 axa
+
+
+vx wp nx0 axa
+vx wp axe nx0 
+
+$( ( ( @l. x ~ P ) <-> ~ ( EX. x P ) ) $)
+vx wp
+pred_theo_43
+
+iff__b
+
+
+vx wp nx0 axa
+vx wp axe nx0 
+
+$( ( ( @l. x ~ P ) <-> ~ ( EX. x P ) ) $)
+vx wp
+pred_theo_43
+
+iff__a
+
+if_if__iff
+
+$.
+
+pred_theo_53 $p |- ( ~ ( @l. x P ) <-> ( EX. x ~ P ) )
+$=
+
+vx wp axa nx0
+vx wp nx0 axe
+
+vx wp nx0 axe
+vx wp axa nx0 
+
+$( |- ( ( EX. x ~ P ) <-> ~ ( @l. x P ) ) $)
+vx wp
+pred_theo_49
+
+iff__b
+
+vx wp nx0 axe
+vx wp axa nx0 
+
+$( |- ( ( EX. x ~ P ) <-> ~ ( @l. x P ) ) $)
+vx wp
+pred_theo_49
+
+iff__a
+
+if_if__iff
+
+$.
+
+pred_theo_56 $p |- ( ( @l. x ( P' x ) ) -> ~ ( EX. x ~ ( P' x ) ) )
+$=
+
+vx vx pp1 axp1
+pred_theo_44
+
+$.
+
+pred_theo_57 $p |- ( ~ ( EX. x ~ ( P' x ) ) -> ( @l. x ( P' x ) ) )
+$=
+
+vx vx pp1 axp1
+pred_theo_45
+
+$.
+
+pred_theo_58 $p |- ( ( @l. x ( P' x ) ) <-> ~ ( EX. x ~ ( P' x ) ) )
+$=
+
+vx vx pp1 axp1
+pred_theo_46
+
+$.
+
+pred_help4 $p |- ( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) )
+$=
+
+$( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) $)
+vx
+wp wq ax0 wq nx0 wp nx0 ax0 ax0 
+
+$( ( P -> Q ) -> ( ~ Q -> ~ P ) $)
+wp wq
+rev_ax3
+
+gnrl
+
+$.
+
+
+pred_help3 $p |- ( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) )
+$=
+
+$( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) $)
+vx wp wq ax0 wq nx0 wp nx0 ax0 ax0 axa
+vx wp wq ax0 axa vx wq nx0 wp nx0 ax0 axa ax0 
+
+$( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) $)
+vx
+wp wq ax0 wq nx0 wp nx0 ax0 ax0 
+
+$( ( P -> Q ) -> ( ~ Q -> ~ P ) $)
+wp wq
+rev_ax3
+
+gnrl
+
+$( ( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) )
+->
+( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) )
+$)
+vx
+wp wq ax0
+wq nx0 wp nx0 ax0 
+
+ax4
+
+mopo
+
+$.
+
+
+pred_help2 $p |- ( ( @l. x ( P -> Q ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) )
+$=
+
+$( ( @l. x ( P -> Q ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx wp wq ax0 axa 
+vx wq nx0 wp nx0 ax0 axa 
+vx wq nx0 axa vx wp nx0 axa ax0 
+
+$( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) $)
+vx wp wq ax0 wq nx0 wp nx0 ax0 ax0 axa
+vx wp wq ax0 axa vx wq nx0 wp nx0 ax0 axa ax0 
+
+$( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) $)
+vx
+wp wq ax0 wq nx0 wp nx0 ax0 ax0 
+
+$( ( P -> Q ) -> ( ~ Q -> ~ P ) $)
+wp wq
+rev_ax3
+
+gnrl
+
+$( ( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) )
+->
+( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) )
+$)
+vx
+wp wq ax0
+wq nx0 wp nx0 ax0 
+
+ax4
+
+mopo
+
+$( ( @l. x ( ~ Q -> ~ P ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx
+wq nx0 
+wp nx0 
+ax4
+
+trans_theo_2
+
+$.
+
+
+pred_helper $p |- ( ( @l. x ( P -> Q ) ) -> ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) )
+$=
+
+$( ( @l. x ( P -> Q ) ) -> ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) $)
+vx wp wq ax0 axa
+vx wq nx0 axa vx wp nx0 axa ax0
+vx wp nx0 axa nx0 vx wq nx0 axa nx0 ax0 
+
+$( ( @l. x ( P -> Q ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx wp wq ax0 axa 
+vx wq nx0 wp nx0 ax0 axa 
+vx wq nx0 axa vx wp nx0 axa ax0 
+
+$( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) $)
+vx wp wq ax0 wq nx0 wp nx0 ax0 ax0 axa
+vx wp wq ax0 axa vx wq nx0 wp nx0 ax0 axa ax0 
+
+$( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) $)
+vx
+wp wq ax0 wq nx0 wp nx0 ax0 ax0 
+
+$( ( P -> Q ) -> ( ~ Q -> ~ P ) $)
+wp wq
+rev_ax3
+
+gnrl
+
+$( ( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) )
+->
+( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) )
+$)
+vx
+wp wq ax0
+wq nx0 wp nx0 ax0 
+
+ax4
+
+mopo
+
+$( ( @l. x ( ~ Q -> ~ P ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx
+wq nx0 
+wp nx0 
+ax4
+
+trans_theo_2
+
+$( ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) -> ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) $)
+vx wq nx0 axa
+vx wp nx0 axa 
+rev_ax3
+
+trans_theo_2
+
+$.
+
+
+pred_min_help $p |- ( ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) -> ( ( EX. x P ) -> ( EX. x Q ) ) )
+$=
+
+$( |- ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) -> ( ( EX. x P ) -> ( EX. x Q ) ) $)
+
+vx wp nx0 axa nx0 
+vx wq nx0 axa nx0 
+vx wp axe 
+vx wq axe
+
+vx wp
+exi_def_rev
+
+vx wq
+exi_def_rev
+
+replace_if 
+
+$.
+
+
+pred_theo_59 $p |- ( ( @l. x ( P -> Q ) ) -> ( ( EX. x P ) -> ( EX. x Q ) ) ) 
+$=
+
+vx wp wq ax0 axa
+vx wp nx0 axa nx0 vx wq nx0 axa nx0 ax0 
+vx wp axe vx wq axe ax0 
+
+
+
+
+$( ( @l. x ( P -> Q ) ) -> ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) $)
+vx wp wq ax0 axa
+vx wq nx0 axa vx wp nx0 axa ax0
+vx wp nx0 axa nx0 vx wq nx0 axa nx0 ax0 
+
+$( ( @l. x ( P -> Q ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx wp wq ax0 axa 
+vx wq nx0 wp nx0 ax0 axa 
+vx wq nx0 axa vx wp nx0 axa ax0 
+
+$( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) $)
+vx wp wq ax0 wq nx0 wp nx0 ax0 ax0 axa
+vx wp wq ax0 axa vx wq nx0 wp nx0 ax0 axa ax0 
+
+$( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) $)
+vx
+wp wq ax0 wq nx0 wp nx0 ax0 ax0 
+
+$( ( P -> Q ) -> ( ~ Q -> ~ P ) $)
+wp wq
+rev_ax3
+
+gnrl
+
+$( ( @l. x ( ( P -> Q ) -> ( ~ Q -> ~ P ) ) )
+->
+( ( @l. x ( P -> Q ) ) -> ( @l. x ( ~ Q -> ~ P ) ) )
+$)
+vx
+wp wq ax0
+wq nx0 wp nx0 ax0 
+
+ax4
+
+mopo
+
+$( ( @l. x ( ~ Q -> ~ P ) ) -> ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) $)
+vx
+wq nx0 
+wp nx0 
+ax4
+
+trans_theo_2
+
+$( ( ( @l. x ~ Q ) -> ( @l. x ~ P ) ) -> ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) $)
+vx wq nx0 axa
+vx wp nx0 axa 
+rev_ax3
+
+trans_theo_2
+
+
+
+
+
+
+
+$( |- ( ~ ( @l. x ~ P ) -> ~ ( @l. x ~ Q ) ) -> ( ( EX. x P ) -> ( EX. x Q ) ) $)
+
+vx wp nx0 axa nx0 
+vx wq nx0 axa nx0 
+vx wp axe 
+vx wq axe
+
+vx wp
+exi_def_rev
+
+vx wq
+exi_def_rev
+
+replace_if 
+
+
+
+
+trans_theo_2
+
+
+$.
+
+$( 70 minutes $)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
