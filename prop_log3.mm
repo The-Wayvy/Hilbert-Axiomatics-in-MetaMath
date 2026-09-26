@@ -178,6 +178,11 @@ if |- X -> Z
 if |- Y -> ( Z -> W )
 then |- X -> W
 
+simple_theo_2
+if |- ( A -> B )
+if |- ( A -> ( B -> C ) )
+then |- ( A -> C )
+
 prdx_expl |- ( ( ~ A ) -> ( A -> B ) )
 
 contrapose_1 
@@ -403,7 +408,7 @@ a__aorb
 if |- A 
 then |- ( A V B )
 
-a__aorb_ |- A -> ( A V B )
+a__aorb_ |- A -> ( A V B )  
 
 b__aorb
 if |- B 
@@ -474,6 +479,8 @@ or_assoc_2 |- ( A V ( B V C ) ) -> ( ( A V B ) V C )
 
 nota_aorb__b |- ( ~ A -> ( ( A V B ) -> B ) ) 
 
+notb_aorb__a |- ( ~ B -> ( ( A V B ) -> A ) ) 
+
 lem_imp
 if |- A -> B
 if |- ~ A -> B
@@ -515,22 +522,21 @@ if |- ( ~ A & ~ B )
 then |- ~ ( A V B )
 
 andor__andorand
-A & ( B V C ) -> ( A & B ) V ( A & C )
+|- A & ( B V C ) -> ( A & B ) V ( A & C )
+
+andorand__andor
+|- ( A & B ) V ( A & C ) ->  A & ( B V C )
+
+orand__orandor
+|- A V ( B & C ) -> ( A V B ) & ( A V C )
+
+orandor__orand
+|- ( A V B ) & ( A V C ) -> A V ( B & C )
 
 
 *********************************************************************************************************
 
-1/8
-
-andorand__andor
-( A & B ) V ( A & C ) ->  A & ( B V C )
-
-
-orand__orandor
-A V ( B & C ) -> ( A V B ) & ( A V C )
-orandor__orand
-( A V B ) & ( A V C ) -> A V ( B & C )
-
+4/8
 
 nand__norn
 ~ ( A & B ) -> ( ~ A V ~ B )
@@ -1528,6 +1534,35 @@ $.
 
 
 $}
+
+${
+
+ifab__ $e |- ( A -> B ) $.
+ifabc__ $e |- ( A -> ( B -> C ) ) $.
+simple_theo_2 $p |- ( A -> C )
+$=
+
+wa wb ax0 
+wa wc ax0 
+
+ifab__
+
+wa wb wc ax0 ax0 
+wa wb ax0 wa wc ax0 ax0  
+
+ifabc__
+
+wa wb wc
+ax2
+
+mopo
+
+mopo
+
+$.
+
+$}
+
 
 prdx_expl $p |- ( ~ A -> ( A -> B ) )
 $=
@@ -4961,6 +4996,38 @@ suffix_trans_3
 
 $.
 
+notb_aorb__a $p |- ( ~ B -> ( ( A V B ) -> A ) )
+$=
+
+wa wb orex0
+wb nx0 
+wa 
+
+$( ( A V B ) -> ( ~ B -> A ) $)
+wa wb orex0
+wa nx0 wb ax0 
+wb nx0 wa ax0 
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0
+wa nx0 wb ax0 
+
+wa wb
+ore_def
+
+iff__a
+
+$( ( ~ A -> B ) -> ( ~ B -> A ) $)
+wa wb
+na_b_nb_a
+
+trans_theo_2
+
+permutation_
+
+
+$.
+
 ${
 
 ifathenb_ $e |- ( A -> B ) $.
@@ -5654,6 +5721,7 @@ mopo
 mopo
 
 $.
+$}
 
 andorandor_cp1 $p |- ( B -> ( ( A & ( B V C ) ) -> ( ( A & B ) V ( A & C ) ) ) )
 $=
@@ -5911,7 +5979,310 @@ mopo
 
 $.
 
-$}
+andorand__andor $p |- ( ( ( A & B ) V ( A & C ) ) ->  ( A & ( B V C ) ) )
+$=
+
+wa wb andx0 
+wa wc andx0 
+wa wb wc orex0 andx0 
+
+$( ( A & B ) -> ( A & ( B V C ) ) $)
+wa wb andx0 
+wa 
+wb wc orex0 
+
+$( ( A & B ) -> A ) $)
+wa wb
+a_and_b__a__
+
+$( ( A & B ) -> ( B V C ) $)
+wa wb andx0
+wb
+wb wc orex0 
+
+$( ( A & B ) -> B ) $)
+wa wb
+a_and_b__b__
+
+$( B -> ( B V C ) $)
+wb wc
+a__aorb_
+
+trans_theo_2
+
+aib_aic__aibc
+
+
+$( ( A & C ) -> ( A & ( B V C ) ) $)
+wa wc andx0 
+wa 
+wb wc orex0 
+
+$( ( A & C ) -> A ) $)
+wa wc
+a_and_b__a__
+
+$( ( A & C ) -> ( B V C ) $)
+wa wc andx0
+wc
+wb wc orex0 
+
+$( ( A & C ) -> C ) $)
+wa wc
+a_and_b__b__
+
+$( C -> ( B V C ) $)
+wb wc
+b__aorb_
+
+trans_theo_2
+
+aib_aic__aibc
+
+disj_imp
+
+$.
+
+orand__orandor $p |- ( ( A V ( B & C ) ) -> ( ( A V B ) & ( A V C ) ) )
+$=
+
+wa
+wb wc andx0
+wa wb orex0 wa wc orex0 andx0 
+
+
+$( A -> ( ( A V B ) & ( A V C ) ) $)
+wa 
+wa wb orex0
+wa wc orex0 
+
+$( A -> ( A V B ) $)
+wa wb
+a__aorb_
+$( A -> ( A V C ) $)
+wa wc
+a__aorb_
+
+aib_aic__aibc
+
+$( ( B & C ) -> ( ( A V B ) & ( A V C ) ) $)
+wb wc andx0
+wa wb orex0
+wa wc orex0 
+
+$( ( B & C ) -> ( A V B ) $)
+wb wc andx0
+wb
+wa wb orex0 
+
+$( ( B & C ) -> B $)
+wb wc
+a_and_b__a__
+$( B -> ( A V B ) $)
+wa wb
+b__aorb_
+
+trans_theo_2
+
+$( ( B & C ) -> ( A V C ) $)
+wb wc andx0
+wc
+wa wc orex0 
+
+$( ( B & C ) -> C $)
+wb wc
+a_and_b__b__
+$( C -> ( A V C ) $)
+wa wc
+b__aorb_
+
+trans_theo_2
+
+aib_aic__aibc
+
+disj_imp
+
+$.
+
+orandor__orand $p |- ( ( ( A V B ) & ( A V C ) ) -> ( A V ( B & C ) ) )
+$=
+
+wa wa nx0 orex0
+wa wb orex0 wa wc orex0 andx0 wa wb wc andx0 orex0 ax0 
+
+$( A V ~ A $)
+wa
+lem
+
+$( ( A V ~ A ) -> ( ( ( A V B ) & ( A V C ) ) -> ( A V ( B & C ) ) ) $)
+wa 
+wa nx0 
+wa wb orex0 wa wc orex0 andx0   wa wb wc andx0 orex0   ax0 
+
+
+$( **** $)
+
+$( A -> ( ( ( A V B ) & ( A V C ) ) -> ( A V ( B & C ) ) ) $)
+wa wa wb wc andx0 orex0 ax0 
+wa wa wb orex0 wa wc orex0 andx0 wa wb wc andx0 orex0 ax0 ax0 
+
+$( A -> ( A V ( B & C ) ) $)
+wa wb wc andx0 
+a__aorb_
+
+$( ( A -> ( A V ( B & C ) ) ) 
+-> 
+( A -> ( ( ( A V B ) & ( A V C ) ) -> ( A V ( B & C ) ) ) ) $)
+wa 
+wa wb wc andx0 orex0
+wa wb orex0 wa wc orex0 andx0 
+weaken_theo
+
+mopo
+
+
+
+$( **** $)
+
+
+$( ( ~ A -> ( ( ( A V B ) & ( A V C ) )  -> ( A V ( B & C ) ) ) $)
+wa wb orex0 wa wc orex0 andx0 
+wa nx0
+wa wb wc andx0 orex0
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V ( B & C ) ) ) $)
+wa wb orex0 wa wc orex0 andx0
+wa nx0 
+wb wc andx0 
+wa wb wc andx0 orex0 
+
+
+$( ( B & C ) -> ( A V ( B & C ) ) $)
+wa wb wc andx0 
+b__aorb_
+
+$( *** $)
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( B & C ) )  $)
+wa wb orex0 wa wc orex0 andx0 
+wa nx0 
+wb 
+wc
+
+$( ***** $)
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> B ) $)
+wa wb orex0 wa wc orex0 andx0
+wa nx0 
+wa wb orex0
+wb
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V B ) ) $)
+wa wb orex0 wa wc orex0 andx0 wa wb orex0 ax0 
+wa wb orex0 wa wc orex0 andx0  wa nx0  wa wb orex0 ax0  ax0 
+
+$( ( ( A V B ) & ( A V C ) ) -> ( A V B ) $)
+wa wb orex0
+wa wc orex0
+a_and_b__a__
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V B ) ) $)
+
+$(
+( ( ( A V B ) & ( A V C ) ) -> ( A V B ) ) 
+->
+( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V B ) ) ) $)
+wa wb orex0 wa wc orex0 andx0
+wa wb orex0 
+wa nx0 
+weaken_theo
+
+mopo
+
+$( ~ A -> ( ( A V B ) -> B ) $)
+wa wb
+nota_aorb__b
+
+suffix_trans_4
+
+
+$( **** $)
+
+$( ******* $)
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> C ) $)
+wa wb orex0 wa wc orex0 andx0
+wa nx0 
+wa wc orex0
+wc
+
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V C ) ) $)
+wa wb orex0 wa wc orex0 andx0 wa wc orex0 ax0 
+wa wb orex0 wa wc orex0 andx0  wa nx0  wa wc orex0 ax0  ax0 
+
+$( ( ( A V B ) & ( A V C ) ) -> ( A V C ) $)
+wa wb orex0
+wa wc orex0
+a_and_b__b__
+$( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V C ) ) $)
+
+$(
+( ( ( A V B ) & ( A V C ) ) -> ( A V C ) ) 
+->
+( ( ( A V B ) & ( A V C ) ) -> ( ~ A -> ( A V C ) ) ) $)
+wa wb orex0 wa wc orex0 andx0
+wa wc orex0 
+wa nx0 
+weaken_theo
+
+mopo
+
+$( ~ A -> ( ( A V C ) -> C ) $)
+wa wc
+nota_aorb__b
+
+suffix_trans_4
+
+
+$( **** $)
+
+aibc_aibd__aibcd
+
+$( ***** $)
+
+
+suffix_trans_2
+
+permutation_
+
+$( ***** $)
+
+disj_imp
+
+mopo
+
+
+
+
+
+
+
+$(
+
+nota_aorb__b |- ( ~ A -> ( ( A V B ) -> B ) )
+
+suffix_trans_4
+if |- ( A -> ( B -> C ) )
+if |- ( B -> ( C -> D ) )
+then |- ( A -> ( B -> D ) ) 
+
+A -> ( B -> C ) 
+A -> ( B -> D ) 
+A -> ( B -> ( C & D ) ) 
+aibc_aibd__aibcd
+
+$)
+
+$.
 
 
 exi_def_rev $p |- ( ~ ( @l. x ~ P ) <-> ( EX. x P ) )
