@@ -257,6 +257,14 @@ nb__n_a_and_b |- ( ~ B -> ~ ~ ( A -> ~ B ) )
 
 n_a_and_b__na_or_nb |- ~ ~ ( A -> ~ B ) -> ( ~ ~ A -> ~ B )
 
+ab__nnab |- ( A -> B ) -> ( ~ ~ A -> B ) 
+
+nnab__ab |- ( ~ ~ A -> B ) -> ( A -> B )
+
+ab__annb |- ( A -> B ) -> ( A -> ~ ~ B )
+
+annb__ab |- ( A -> ~ ~ B ) -> ( A -> B )
+
 if_and_if__iff_
 if |- ~ ( ( A -> B ) -> ~ ( B -> A ) )
 then |- ( A <-> B )
@@ -533,19 +541,19 @@ orand__orandor
 orandor__orand
 |- ( A V B ) & ( A V C ) -> A V ( B & C )
 
+nand__norn
+|- ~ ( A & B ) -> ( ~ A V ~ B )
+
+norn__nand
+|- ( ~ A V ~ B ) -> ~ ( A & B )
+
+nor__nandn
+|- ~ ( A V B ) -> ( ~ A & ~ B )
 
 *********************************************************************************************************
 
-4/8
+7/8
 
-nand__norn
-~ ( A & B ) -> ( ~ A V ~ B )
-norn__nand
-( ~ A V ~ B ) -> ~ ( A & B )
-
-
-nor__nandn
-~ ( A V B ) -> ( ~ A & ~ B )
 nandn__nor
 ( ~ A & ~ B ) -> ~ ( A V B )  
 
@@ -2666,6 +2674,89 @@ dub_neg_1
 suffix_trans_1
 
 $.
+
+ab__nnab $p |- ( ( A -> B ) -> ( ~ ~ A -> B ) ) 
+$=
+
+wa nx0 nx0 wa ax0 
+wa wb ax0 wa nx0 nx0 wb ax0 ax0 
+
+$( ~ ~ A -> A  $)
+wa 
+dub_neg_1
+
+$( |- ( ( ~ ~ A -> A ) -> ( ( A -> B ) -> ( ~ ~ A -> B ) ) ) $)
+wa nx0 nx0 
+wa 
+wb
+trans_theo_4 
+
+mopo
+
+$.
+
+nnab__ab $p |- ( ( ~ ~ A -> B ) -> ( A -> B ) )
+$=
+
+wa wa nx0 nx0  ax0 
+wa nx0 nx0 wb ax0 wa wb ax0 ax0 
+
+$( A -> ~ ~ A $)
+wa 
+dub_neg_2
+
+$( |- ( ( A -> ~ ~ A ) -> ( ( ~ ~ A -> B ) -> ( A -> B ) ) ) $)
+wa 
+wa nx0 nx0 
+wb
+trans_theo_4 
+
+mopo
+
+$.
+
+ab__annb $p |- ( ( A -> B ) -> ( A -> ~ ~ B ) )
+$=
+
+wa wb wb nx0 nx0 ax0 ax0
+wa wb ax0 wa wb nx0 nx0 ax0 ax0 
+
+wb wb nx0 nx0 ax0 
+wa
+
+wb
+dub_neg_2
+
+prefix_theo
+
+wa wb wb nx0 nx0 
+ax2
+
+mopo
+
+$.
+
+annb__ab $p |- ( ( A -> ~ ~ B ) -> ( A -> B ) )
+$=
+
+wa wb nx0 nx0 wb ax0 ax0
+wa wb nx0 nx0 ax0 wa wb ax0 ax0 
+
+wb nx0 nx0 wb ax0 
+wa
+
+wb
+dub_neg_1
+
+prefix_theo
+
+wa wb nx0 nx0 wb 
+ax2
+
+mopo
+
+$.
+
 
 ${
 if_a_and_b_ $e |- ~ ( ( A -> B ) -> ~ ( B -> A ) ) $.
@@ -6260,30 +6351,251 @@ disj_imp
 
 mopo
 
+$.
 
+nand__norn $p |- ( ~ ( A & B ) -> ( ~ A V ~ B ) )
+$=
 
+$( ~ ( A & B ) -> ( ~ A V ~ B ) $)
+wa wb andx0 nx0
+wa nx0 nx0 wb nx0 ax0 
+wa nx0 wb nx0 orex0 
 
+$( ~ ( A & B ) -> ( ~ ~ A -> ~ B ) $)
+wa wb andx0 nx0 
+wa wb nx0 ax0 
+wa nx0 nx0 wb nx0 ax0 
 
+$( ~ ( A & B ) -> ( A -> ~ B ) $)
+wa wb andx0 nx0 
+wa wb nx0 ax0 nx0 nx0 
+wa wb nx0 ax0 
 
+$( ~ ( A & B ) -> ~ ~ ( A -> ~ B ) $)
+wa wb nx0 ax0 nx0 wa wb andx0 ax0
+wa wb andx0 nx0 wa wb nx0 ax0 nx0 nx0 ax0 
 
-$(
+$( ~ ( A -> ~ B ) -> ( A & B ) $)
 
-nota_aorb__b |- ( ~ A -> ( ( A V B ) -> B ) )
+wa wb andx0
+wa wb nx0 ax0 nx0 
 
-suffix_trans_4
-if |- ( A -> ( B -> C ) )
-if |- ( B -> ( C -> D ) )
-then |- ( A -> ( B -> D ) ) 
+$( ( A & B ) <-> ~ ( A -> ~ B ) $)
+wa wb
+and_def
 
-A -> ( B -> C ) 
-A -> ( B -> D ) 
-A -> ( B -> ( C & D ) ) 
-aibc_aibd__aibcd
+iff__b
 
-$)
+$( ( ~ ( A -> ~ B ) -> ( A & B ) ) -> ( ~ ( A & B ) -> ~ ~ ( A -> ~ B ) ) $)
+wa wb nx0 ax0 nx0 
+wa wb andx0 
+rev_ax3
+
+mopo
+
+$( ~ ~ ( A -> ~ B ) -> ( A -> ~ B ) $)
+wa wb nx0 ax0 
+dub_neg_1
+
+trans_theo_2
+
+$( ( A -> ~ B ) -> ( ~ ~ A -> ~ B ) $)
+wa wb nx0 
+ab__nnab
+
+trans_theo_2
+
+$( ( ~ ~ A -> ~ B ) -> ( ~ A V ~ B ) $)
+wa nx0 wb nx0 orex0 
+wa nx0 nx0 wb nx0 ax0 
+
+$( ( ~ A V ~ B ) <-> ( ~ ~ A -> ~ B ) $)
+wa nx0 wb nx0 
+ore_def
+
+iff__b
+
+trans_theo_2
 
 $.
 
+norn__nand $p |- ( ( ~ A V ~ B ) -> ~ ( A & B ) )
+$=
+
+wa nx0 wb nx0 orex0
+wa wb nx0 ax0 nx0 nx0 
+wa wb andx0 nx0 
+
+
+$( ( ~ A V ~ B ) -> ~ ~ ( A -> ~ B ) $)
+wa nx0 wb nx0 orex0 
+wa wb nx0 ax0 
+wa wb nx0 ax0 nx0 nx0 
+
+$( ( ~ A V ~ B ) -> ( A -> ~ B ) $)
+wa nx0 wb nx0 orex0 
+wa nx0 nx0 wb nx0 ax0
+wa wb nx0 ax0 
+
+$( ( ~ A V ~ B ) -> ( ~ ~ A -> ~ B ) $)
+wa nx0 wb nx0 orex0
+wa nx0 nx0 wb nx0 ax0 
+
+$( ( ~ A V ~ B ) <-> ( ~ ~ A -> ~ B ) $)
+wa nx0  wb nx0
+ore_def
+
+iff__a
+
+$( ( ~ ~ A -> ~ B ) -> ( A -> ~ B ) $)
+wa wb nx0 
+nnab__ab
+
+trans_theo_2
+
+$( ( A -> ~ B ) -> ~ ~ ( A -> ~ B ) $)
+wa wb nx0 ax0 
+dub_neg_2
+
+trans_theo_2
+
+
+$( ( ~ ~ ( A -> ~ B ) -> ~ ( A & B ) ) $)
+wa wb andx0 wa wb nx0 ax0 nx0 ax0 
+wa wb nx0 ax0 nx0 nx0 wa wb andx0 nx0 ax0 
+
+$( ( A & B ) -> ~ ( A -> ~ B ) $)
+wa wb andx0
+wa wb nx0 ax0 nx0 
+
+$( ( A & B ) <-> ~ ( A -> ~ B ) $)
+wa wb
+and_def
+
+iff__a
+
+$( ( ( A & B ) -> ~ ( A -> ~ B ) ) -> ( ~ ~ ( A -> ~ B ) -> ~ ( A & B ) ) $)
+wa wb andx0
+wa wb nx0 ax0 nx0 
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+$.
+
+nor__nandn $p |- ( ~ ( A V B ) -> ( ~ A & ~ B ) )
+$=
+
+$( ~ ( A V B ) -> ( ~ A & ~ B ) $)
+wa wb orex0 nx0 
+wa nx0 wb ax0 nx0 
+wa nx0 wb nx0 andx0 
+
+$( ( ~ ( A V B ) -> ~ ( ~ A -> B ) ) $)
+wa nx0 wb ax0 wa wb orex0 ax0
+wa wb orex0 nx0 wa nx0 wb ax0 nx0 ax0 
+
+$( ( ~ A -> B ) -> ( A V B ) $)
+wa wb orex0
+wa nx0 wb ax0 
+
+$( ( A V B ) <-> ( ~ A -> B ) $)
+wa wb
+ore_def
+
+iff__b
+
+$( ( ( ~ A -> B ) -> ( A V B ) ) -> ( ~ ( A V B ) -> ~ ( ~ A -> B ) ) $)
+wa nx0 wb ax0 
+wa wb orex0 
+rev_ax3
+
+mopo
+
+
+$( ~ ( ~ A -> B ) -> ( ~ A & ~ B ) $)
+wa nx0 wb ax0 nx0 
+wa nx0 wb nx0 nx0 ax0 nx0 
+wa nx0 wb nx0 andx0 
+
+$( |- ( ~ ( ~ A -> B ) -> ~ ( ~ A -> ~ ~ B ) ) $)
+wa nx0 wb
+dub_neg_cons_2_
+
+$( ~ ( ~ A -> ~ ~ B ) -> ( ~ A & ~ B ) $)
+wa nx0 wb nx0 andx0
+wa nx0 wb nx0 nx0 ax0 nx0 
+
+$( ( ~ A & ~ B ) <-> ~ ( ~ A -> ~ ~ B ) $)
+wa nx0 wb nx0 
+and_def
+
+iff__b
+
+trans_theo_2
+
+trans_theo_2
+
+$.
+
+nandn__nor $p |- ( ( ~ A & ~ B ) -> ~ ( A V B ) )   
+$=
+
+wa nx0 wb nx0 andx0 
+wa nx0 wb ax0 nx0 
+wa wb orex0 nx0 
+
+$( ( ~ A & ~ B ) -> ~ ( ~ A -> B ) $)
+wa nx0 wb nx0 andx0 
+wa nx0 wb nx0 nx0 ax0 nx0 
+wa nx0 wb ax0 nx0 
+
+$( ( ~ A & ~ B ) -> ~ ( ~ A -> ~ ~ B ) $)
+wa nx0 wb nx0 andx0
+wa nx0 wb nx0 nx0 ax0 nx0 
+
+$( ( ~ A & ~ B ) <-> ~ ( ~ A -> ~ ~ B ) $)
+wa nx0 wb nx0 
+and_def
+
+iff__a
+
+$( ~ ( ~ A -> ~ ~ B ) -> ~ ( ~ A -> B ) $)
+wa nx0 wb
+dub_neg_cons_1_
+
+trans_theo_2
+
+
+
+$( ( ~ ( ~ A -> B ) -> ~ ( A V B ) ) $)
+wa wb orex0 wa nx0 wb ax0 ax0 
+wa nx0 wb ax0 nx0 wa wb orex0 nx0 ax0
+
+$( ( A V B ) -> ( ~ A -> B ) $)
+wa wb orex0
+wa nx0 wb ax0 
+
+$( ( A V B ) <-> ( ~ A -> B ) $)
+wa wb
+ore_def
+
+iff__a
+
+$( ( ( A V B ) -> ( ~ A -> B ) ) -> ( ~ ( ~ A -> B ) -> ~ ( A V B ) ) $)
+wa wb orex0 
+wa nx0 wb ax0 
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+
+
+$.
 
 exi_def_rev $p |- ( ~ ( @l. x ~ P ) <-> ( EX. x P ) )
 $=
@@ -7839,73 +8151,13 @@ suffix_iff
 $.
 
 
-pred_cp_1 $p |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) )
-$=
-
-$( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) ) $)
-vx wp nx0 axa vx wq nx0 axa andx0  vx wp nx0 wq nx0 andx0 axa  ax0
-vx wp nx0 wq nx0 andx0 axa nx0   vx wp nx0 axa vx wq nx0 axa andx0 nx0   ax0 
-
-$( |- ( ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) ) $)
-vx wp nx0 wq nx0 
-pred_theo_26_2 
-
-$( |- ( ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) 
-->
-( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) ) $)
-vx wp nx0 axa vx wq nx0 axa andx0 
-vx wp nx0 wq nx0 andx0 axa
-rev_ax3
-
-mopo
-
-$.
-
-pred_cp_2 $p |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) )
-$=
-
-$( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) ) $)
-vx wp nx0 wq nx0 andx0 axa nx0 
-vx wp nx0 axa vx wq nx0 axa andx0
-vx wp nx0 axa nx0 vx wq nx0 axa nx0 orex0   
-
-
-$( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) ) $) 
-vx wp nx0 axa vx wq nx0 axa andx0  vx wp nx0 wq nx0 andx0 axa  ax0
-vx wp nx0 wq nx0 andx0 axa nx0   vx wp nx0 axa vx wq nx0 axa andx0 nx0   ax0 
-
-$( |- ( ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) ) $)
-vx wp nx0 wq nx0 
-pred_theo_26_2 
-
-$( |- ( ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) 
-->
-( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) ) $)
-vx wp nx0 axa vx wq nx0 axa andx0 
-vx wp nx0 wq nx0 andx0 axa
-rev_ax3
-
-mopo
-
-
-$( ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) )  $)
-vx wp nx0 axa  
-vx wq nx0 axa
-nand__norn
-
-trans_theo_2
-?
-
-$.
-
 pred_theo_71 $p |- ( ( EX. x ( P V Q ) ) -> ( ( EX. x P ) V ( EX. x  Q ) ) )
 $=
 
 $( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) $)
 vx wp nx0 wq nx0 andx0 axa nx0 
-vx wp nx0 axa vx wq nx0 axa andx0
+vx wp nx0 axa vx wq nx0 axa andx0 nx0 
 vx wp nx0 axa nx0 vx wq nx0 axa nx0 orex0   
-
 
 $( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) ) $) 
 vx wp nx0 axa vx wq nx0 axa andx0  vx wp nx0 wq nx0 andx0 axa  ax0
@@ -7924,14 +8176,13 @@ rev_ax3
 
 mopo
 
-
 $( ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) )  $)
 vx wp nx0 axa  
 vx wq nx0 axa
 nand__norn
 
 trans_theo_2
-?
+
 
 $.
 
