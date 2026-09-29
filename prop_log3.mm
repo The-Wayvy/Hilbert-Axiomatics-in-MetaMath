@@ -473,6 +473,16 @@ if |- A -> C
 if |- B -> C 
 disj_imp |- ( A V B ) -> C
 
+if |- ( A -> C )
+disj_then1 |- ( A V B ) -> ( C V B )
+
+if |- ( B -> C )
+disj_then2 |- ( A V B ) -> ( A V C )
+
+if |- ( A -> C )
+if |- ( B -> D )
+disj_then3 |- ( A V B ) -> ( C V D )
+
 dub_neg_cons_1 |- ( ( A -> B ) -> ( A -> ~ ~ B ) )
 
 dub_neg_cons_1_ |- ( ~ ( A -> ~ ~ B ) -> ~ ( A -> B ) )
@@ -778,6 +788,9 @@ pred_theo_70
 
 pred_theo_71
 |- ( ( EX. x ( P V Q ) ) -> ( ( EX. x P ) V ( EX. x  Q ) ) )
+
+pred_theo_72 
+|- ( ( EX. x P ) V ( EX. x  Q ) ) -> ( EX. x ( P V Q ) )
 
 
 *********************************************************************************************************
@@ -4849,6 +4862,106 @@ $.
 
 $}
 
+${
+
+ifac $e |- ( A -> C ) $.
+disj_then1 $p |- ( ( A V B ) -> ( C V B ) ) 
+$=
+
+wa
+wb
+wc wb orex0
+
+$( A -> ( C V B ) $)
+wa 
+wc
+wc wb orex0
+
+$( A -> C $)
+ifac
+
+$( C -> ( C V B ) $)
+wc wb
+a__aorb_
+
+trans_theo_2
+
+$( B -> ( C V B ) $)
+wc wb
+b__aorb_
+
+disj_imp
+
+$.
+
+$}
+
+${
+
+ifbc $e |- ( B -> C ) $.
+disj_then2 $p |- ( ( A V B ) -> ( A V C ) )
+$=
+
+wa
+wb
+wa wc orex0
+
+$( A -> ( A V C ) $)
+wa wc
+a__aorb_
+
+$( B -> ( A V C ) $)
+
+wb 
+wc
+wa wc orex0
+
+$( B -> C $)
+ifbc
+
+$( C -> ( A V C ) $)
+wa wc
+b__aorb_
+
+trans_theo_2
+
+
+disj_imp
+
+$.
+
+$}
+
+
+${
+
+ifac_ $e |- ( A -> C ) $.
+ifbd_ $e |- ( B -> D ) $.
+disj_then3 $p |- ( ( A V B ) -> ( C V D ) )
+$=
+
+wa wb orex0
+wc wb orex0
+wc wd orex0 
+
+$( ( A V B ) -> ( C V B ) $)
+wa wb wc
+ifac_
+disj_then1
+
+
+$( ( C V B ) -> ( C V D ) $)
+wc wb wd
+ifbd_
+disj_then2
+
+trans_theo_2
+
+$.
+$}
+
+
+
 dub_neg_cons_1 $p |- ( ( A -> B ) -> ( A -> ~ ~ B ) )
 $=
 
@@ -8154,6 +8267,60 @@ $.
 pred_theo_71 $p |- ( ( EX. x ( P V Q ) ) -> ( ( EX. x P ) V ( EX. x  Q ) ) )
 $=
 
+
+vx wp wq orex0 axe
+vx wp nx0 axa nx0   vx wq nx0 axa nx0  orex0
+vx wp axe   vx wq axe  orex0
+
+
+
+$( ( EX. x ( P V Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) $)
+vx wp wq orex0 axe
+vx wp wq orex0 nx0 axa nx0 
+vx wp nx0 axa nx0 vx wq nx0 axa nx0 orex0  
+
+$( ( EX. x ( P V Q ) ) -> ~ ( @l. x ~ ( P V Q ) ) $)
+vx wp wq orex0 axe 
+vx wp wq orex0 nx0 axa nx0  
+
+vx wp wq orex0 
+exi_def
+
+iff__a
+
+$( ~ ( @l. x ~ ( P V Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) $)
+vx wp wq orex0 nx0 axa nx0 
+vx wp nx0 wq nx0 andx0 axa nx0 
+vx wp nx0 axa nx0  vx wq nx0 axa nx0  orex0 
+
+$( ** $)
+
+$( ~ ( @l. x ~ ( P V Q ) ) -> ~ ( @l. x ( ~ P & ~ Q ) ) $)
+vx wp nx0 wq nx0 andx0 axa  vx wp wq orex0 nx0 axa  ax0
+vx wp wq orex0 nx0 axa nx0  vx wp nx0 wq nx0 andx0 axa nx0  ax0 
+
+$( ( @l. x ( ~ P & ~ Q ) ) -> ( @l. x ~ ( P V Q ) ) $)
+vx 
+wp nx0 wq nx0 andx0
+wp wq orex0 nx0 
+
+$( ( ~ P & ~ Q ) -> ~ ( P V Q ) $)
+wp wq
+nandn__nor
+
+pred_theo_18
+
+$( ( ( @l. x ( ~ P & ~ Q ) ) -> ( @l. x ~ ( P V Q ) ) )
+-> ( ~ ( @l. x ~ ( P V Q ) ) -> ~ ( @l. x ( ~ P & ~ Q ) ) ) $)
+vx wp nx0 wq nx0 andx0 axa
+vx wp wq orex0 nx0 axa 
+
+rev_ax3
+
+mopo
+
+$( ** $)
+
 $( |- ( ~ ( @l. x ( ~ P & ~ Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) $)
 vx wp nx0 wq nx0 andx0 axa nx0 
 vx wp nx0 axa vx wq nx0 axa andx0 nx0 
@@ -8183,8 +8350,174 @@ nand__norn
 
 trans_theo_2
 
+trans_theo_2
+
+trans_theo_2
+
+
+$(  **** $)
+
+$( ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) -> ( ( EX. x P ) V ( EX. x Q ) )  $)
+vx wp nx0 axa nx0
+vx wq nx0 axa nx0
+vx wp axe
+vx wq axe
+
+
+$( ~ ( @l. x ~ P ) -> ( EX. x P ) $)
+vx wp axe 
+vx wp nx0 axa nx0 
+
+vx wp   
+exi_def
+
+iff__b
+
+
+$( ~ ( @l. x ~ Q ) -> ( EX. x Q ) $)
+vx wq axe 
+vx wq nx0 axa nx0 
+
+vx wq   
+exi_def
+
+iff__b
+
+disj_then3
+
+$( ***** $)
+
+trans_theo_2
 
 $.
+
+pred_theo_72 $p |- ( ( ( EX. x P ) V ( EX. x  Q ) ) -> ( EX. x ( P V Q ) ) )
+$=
+
+$( ( ( EX. x P ) V ( EX. x Q ) ) -> ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) $)
+
+
+$( ( EX. x P ) -> ~ ( @l. x ~ P ) $)
+exi_def
+iff__a
+
+$( ( EX. x Q ) -> ~ ( @l. x ~ Q ) $)
+exi_def
+iff__a
+
+disj_then3
+
+
+
+
+$( ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) -> ( EX. x ( P V Q ) ) $)
+
+
+$( ( ~ ( @l. x ~ P ) V ~ ( @l. x ~ Q ) ) -> ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) $)
+norn__nand
+
+
+$( ** $)
+
+$( ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ( EX. x ( P V Q ) ) $)
+
+
+
+
+
+
+
+$( ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ~ ( @l. x ( ~ P & ~ Q ) ) $)
+
+$( ( @l. x ( ~ P & ~ Q ) ) -> ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) $)
+
+pred_theo_26_1
+
+$( ( ( @l. x ( ~ P & ~ Q ) ) -> ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) )
+-> ( ~ ( ( @l. x ~ P ) & ( @l. x ~ Q ) ) -> ~ ( @l. x ( ~ P & ~ Q ) ) ) $)
+
+rev_ax3
+
+mopo
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+$( ~ ( @l. x ( ~ P & ~ Q ) ) ) -> ( EX. x ( P V Q ) ) $)
+
+$( ~ ( @l. x ( ~ P & ~ Q ) ) ) -> ~ ( @l. x ~ ( P V Q ) ) $)
+
+$( ( @l. x ~ ( P V Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) $)
+
+$( ~ ( P V Q ) -> ( ~ P & ~ Q ) $)
+nor__nandn
+
+pred_theo_18
+
+$( ( ( @l. x ~ ( P V Q ) ) -> ( @l. x ( ~ P & ~ Q ) ) ) 
+-> ( ( ~ ( @l. x ( ~ P & ~ Q ) ) ) -> ~ ( @l. x ~ ( P V Q ) ) ) $)
+
+rev_ax3
+
+mopo
+
+$( ~ ( @l. x ~ ( P V Q ) ) -> ( EX. x ( P V Q ) ) $)
+
+exi_def
+iff__b
+
+trans_theo_2
+
+trans_theo_2
+
+$( ** $)
+
+trans_theo_2
+
+trans_theo_2
+
+?
+
+
+
+$.
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 $(
