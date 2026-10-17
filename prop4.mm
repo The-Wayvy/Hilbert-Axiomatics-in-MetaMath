@@ -116,6 +116,60 @@ double_ax2
 if |- ( A -> ( B -> C ) )
 then |- ( ( ( A -> B ) -> A ) -> ( ( A -> B ) -> C ) )
 
+prdx_expl
+|- ( ~ A -> ( A -> B ) )
+
+prdx_expl_
+|- ( A -> ( ~ A -> B ) )
+
+a_nb_a
+|- ( A -> ( ~ B -> A ) )
+
+ex_falso_1
+if |- A
+then |- ( ~ A -> B )
+
+ex_falso_2
+if |- ~ A
+then |- ( A -> B )
+
+contrapose_1
+if |- B 
+then |- ( ( ~ A -> ~ B ) -> A )
+
+imp_f_imp_all_1
+|- ( A -> ~ B ) -> ( A -> ( B -> C ) )
+
+imp_f_imp_all_2
+|- ( A -> B ) -> ( A -> ( ~ B -> C ) )
+
+imp_f_imp_all1
+if |- B
+then |- ( ( A -> ~ B ) -> ( A -> C ) ) 
+
+imp_f_imp_all2
+if |- ~ B
+then |- ( ( A -> B ) -> ( A -> C ) )
+
+self_not 
+|- ( A -> ~ A ) -> ( A -> B )
+
+not_self
+|- ( ~ A -> A ) -> ( B -> A )
+
+not_self_
+|- ( ~ A -> A ) -> A 
+
+dub_neg
+|- ( ~ ~ A -> A )
+
+3n_to_1n
+|- ( ~ ~ ~ A -> ~ A )
+
+dub_neg_2
+|- ( A -> ~ ~ A )
+
+
 $)
 
 
@@ -791,6 +845,8 @@ trans_theo_2
 $.
 
 
+${
+
 _ifabc_ $e |- ( A -> ( B -> C ) ) $.
 double_ax2 $p |- ( ( ( A -> B ) -> A ) -> ( ( A -> B ) -> C ) )
 $=
@@ -819,6 +875,355 @@ ax2
 mopo
 
 $.
+
+$}
+
+
+
+prdx_expl $p |- ( ~ A -> ( A -> B ) )
+$=
+
+wa nx0 wb nx0 wa nx0 ax0 ax0 
+wa nx0 wa wb ax0 ax0 
+
+$( |- ( ~ A -> ( ~ B -> ~ A ) ) $)
+wa nx0 
+wb nx0 
+ax1
+
+$( |- ( ( ~ A -> ( ~ B -> ~ A ) ) -> ( ~ A -> ( A -> B ) ) ) $)
+wa nx0  wb nx0 wa nx0 ax0  wa wb ax0 ax0 ax0 
+wa nx0 wb nx0 wa nx0 ax0 ax0  wa nx0 wa wb ax0 ax0 ax0 
+
+$( |- ( ~ A -> ( ( ~ B -> ~ A ) -> ( A -> B ) ) ) $)
+wb nx0 wa nx0 ax0  wa wb ax0 ax0 
+wa nx0
+
+$( |- ( ~ B -> ~ A ) -> ( A -> B ) $)
+wb wa
+ax3
+
+prefix_theo
+
+$( |- ( ~ A -> ( ( ~ B -> ~ A ) -> ( A -> B ) ) )
+-> ( ( ~ A -> ( ~ B -> ~ A ) ) -> ( ~ A -> ( A -> B ) ) ) $)
+wa nx0
+wb nx0 wa nx0 ax0
+wa wb ax0 
+ax2
+
+mopo
+
+mopo
+
+$.
+
+prdx_expl_ $p |- ( A -> ( ~ A -> B ) )
+$=
+
+wa nx0 wa wb
+
+wa wb
+prdx_expl
+
+permutation_
+
+$.
+
+a_nb_a $p |- ( A -> ( ~ B -> A ) )
+$=
+wa wb nx0 
+ax1
+$.
+
+
+${
+
+
+na $e |- ~ A $.
+ex_falso_2 $p |- ( A -> B )
+$=
+
+wa nx0
+wa wb ax0 
+
+na
+
+wa wb
+prdx_expl
+
+mopo
+
+$.
+$}
+
+
+${
+
+
+a_ $e |- A $.
+ex_falso_1 $p |- ( ~ A -> B )
+$=
+
+wa
+wa nx0 wb ax0 
+
+a_
+
+wa wb 
+prdx_expl_
+
+mopo
+
+
+$.
+
+$}
+
+${
+
+b_ $e |- B $.
+contrapose_1 $p |- ( ( ~ A -> ~ B ) -> A )
+$=
+
+wa nx0 wb nx0 ax0 wb wa ax0 ax0 
+wa nx0 wb nx0 ax0 wa ax0 
+
+$( |- ( ~ A -> ~ B ) -> ( B -> A ) $)
+wa wb 
+ax3
+
+$( |- ( ( ~ A -> ~ B ) -> ( B -> A ) ) -> ( ( ~ A -> ~ B ) -> A )  $)
+
+wa nx0 wb nx0 ax0
+wb 
+wa
+
+b_
+
+simple_theo
+
+mopo
+
+
+$.
+$}
+
+imp_f_imp_all_1 $p |- ( ( A -> ~ B ) -> ( A -> ( B -> C ) ) )
+$=
+
+wa wb nx0 wb wc ax0 ax0 ax0 
+wa wb nx0 ax0 wa wb wc ax0 ax0 ax0 
+
+$( |- A -> ( ~ B -> ( B -> C ) ) $)
+wb nx0 wb wc ax0 ax0 
+wa
+
+$( |- ( ~ B -> ( B -> C ) ) $)
+wb wc
+prdx_expl
+
+prefix_theo
+
+$( |- ( A -> ( ~ B -> ( B -> C ) ) ) -> ( ( A -> ~ B ) -> ( A -> ( B -> C ) ) ) $)
+wa
+wb nx0 
+wb wc ax0 
+ax2
+
+mopo
+
+$.
+
+
+imp_f_imp_all_2 $p |- ( ( A -> B ) -> ( A -> ( ~ B -> C ) ) )
+$=
+
+wa wb wb nx0 wc ax0 ax0 ax0 
+wa wb ax0 wa wb nx0 wc ax0 ax0 ax0 
+
+$( |- A -> ( B -> ( ~ B -> C ) ) $)
+wb wb nx0 wc ax0 ax0 
+wa
+
+$( |- ( B -> ( ~ B -> C ) ) $)
+wb wc
+prdx_expl_
+
+prefix_theo
+
+$( |- ( A -> ( B -> ( ~ B -> C ) ) ) -> ( ( A -> B ) -> ( A -> ( ~ B -> C ) ) ) $)
+wa
+wb 
+wb nx0 wc ax0 
+ax2
+
+mopo
+
+$.
+
+${
+
+
+ifb_ $e |- B $.
+imp_f_imp_all1 $p |- ( ( A -> ~ B ) -> ( A -> C ) ) 
+$=
+
+wa wb nx0 ax0
+wa wb wc ax0 ax0 
+wa wc ax0 
+
+$( |- ( ( A -> ~ B ) -> ( A -> ( B -> C ) ) ) $)
+wa wb wc
+imp_f_imp_all_1
+
+
+$( |- ( A -> ( B -> C ) ) -> ( A -> C ) $)
+wa wb wc
+
+ifb_
+simple_theo
+
+trans_theo_2
+
+$.
+$}
+
+${
+
+
+ifnb_ $e |- ~ B $.
+imp_f_imp_all2 $p |- ( ( A -> B ) -> ( A -> C ) )
+$=
+
+wa wb ax0
+wa wb nx0 wc ax0 ax0 
+wa wc ax0 
+
+$( |- ( ( A -> B ) -> ( A -> ( ~ B -> C ) ) ) $)
+wa wb wc
+imp_f_imp_all_2
+
+
+$( |- ( A -> ( ~ B -> C ) ) -> ( A -> C ) $)
+wa wb nx0 wc
+
+ifnb_
+simple_theo
+
+trans_theo_2
+
+$.
+$}
+
+self_not $p |- ( ( A -> ~ A ) -> ( A -> B ) )
+$=
+
+wa wa nx0 wb ax0 ax0 
+wa wa nx0 ax0 wa wb ax0 ax0 
+
+$( |- A -> ( ~ A -> B ) $)
+wa wb 
+prdx_expl_
+
+$( |- ( A -> ( ~ A -> B ) ) -> ( ( A -> ~ A ) -> ( A -> B ) ) $)
+wa wa nx0 wb 
+ax2
+
+mopo
+
+$.
+
+not_self $p |- ( ( ~ A -> A ) -> ( B -> A ) )
+$=
+
+wa nx0 wa ax0 
+wa nx0 wb nx0 ax0
+wb wa ax0 
+
+$( |- ( ( ~ A -> A ) -> ( ~ A -> ~ B ) ) $)
+wa nx0 wa wb nx0 ax0 ax0 
+wa nx0 wa ax0 wa nx0 wb nx0 ax0 ax0 
+
+$( |- ( ~ A -> ( A -> ~ B ) ) $)
+wa wb nx0 
+prdx_expl
+
+$( |- ( ~ A -> ( A -> ~ B ) ) -> ( ( ~ A -> A ) -> ( ~ A -> ~ B ) ) $)
+wa nx0 wa wb nx0 
+ax2
+
+mopo
+
+$( |- ( ( ~ A -> ~ B ) -> ( B -> A ) ) $)
+wa wb
+ax3
+
+trans_theo_2
+
+$.
+
+not_self_ $p |- ( ( ~ A -> A ) -> A ) 
+$=
+
+wa nx0 wa ax0 wa nx0 wa ax0 wa ax0 ax0 
+wa nx0 wa ax0 wa ax0
+
+$( |- ( ~ A -> A ) -> ( ( ~ A -> A ) -> A ) $)
+wa 
+wa nx0 wa ax0 
+not_self
+
+$( |- ( ( ( ~ A -> A ) -> ( ( ~ A -> A ) -> A ) ) -> ( ( ~ A -> A ) -> A ) ) $)
+wa nx0 wa ax0 
+wa
+strength_theo
+
+mopo
+
+$.
+
+dub_neg $p |- ( ~ ~ A -> A )
+$=
+
+wa nx0 nx0
+wa nx0 wa ax0 
+wa
+
+$( |- ~ ~ A -> ( ~ A -> A ) $)
+wa nx0 wa 
+prdx_expl
+
+$( |- ( ~ A -> A ) -> A $)
+wa
+not_self_
+
+trans_theo_2
+
+$.
+
+3n_to_1n $p |- ( ~ ~ ~ A -> ~ A )
+$=
+wa nx0
+dub_neg
+$.
+
+dub_neg_2 $p |- ( A -> ~ ~ A )
+$=
+
+$( |- ~ ~ A -> A $)
+
+$( |- ( ~ ~ A -> ~ A ) -> ~ A $)
+
+$( |- ( ~ ~ A -> ~ A ) -> ( A -> ~ A ) $)
+
+$( |- ( A -> ~ A ) -> ( A -> ~ ~ A )  $)
+
+
+$(  $)
+
+$.
+
 
 
 
