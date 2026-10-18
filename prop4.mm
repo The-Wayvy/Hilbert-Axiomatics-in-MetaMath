@@ -211,7 +211,15 @@ n_dub_neg_con_1
 n_dub_neg_con_2
 |- ~ ( A -> B ) -> ~ ( A -> ~ ~ B )
 
+a_F__na
+if |- A -> B
+if |- A -> ~ B
+then |- ~ A 
 
+lem_imp
+if |- A -> B
+if |- ~ A -> B 
+then |- B
 
 
 $)
@@ -1620,4 +1628,90 @@ rev_ax3
 mopo
 
 $.
+
+${
+
+_ab_ $e |- ( A -> B ) $.
+anb_ $e |- ( A -> ~ B ) $.
+a_F__na $p |- ~ A 
+$=
+
+wa wa nx0 ax0
+wa nx0 
+
+$( |- A -> ~ A  $)
+wa
+wb nx0
+wa nx0 
+
+anb_
+
+$( |- ( ~ B -> ~ A ) $)
+wa wb ax0
+wb nx0 wa nx0 ax0 
+
+_ab_
+
+$( |- ( A -> B ) -> ( ~ B -> ~ A ) $)
+wa wb 
+rev_ax3
+
+mopo
+
+trans_theo_2
+
+$( |- ( A -> ~ A ) -> ~ A $)
+wa
+self_not_
+
+mopo
+
+$.
+
+$}
+
+${
+
+ifab__ $e |- ( A -> B ) $.
+ifnab $e |- ( ~ A -> B ) $.
+lem_imp $p |- B
+$=
+
+wb nx0 wb ax0 
+wb
+
+$( |- ( ~ B -> B ) $)
+wb nx0 
+wa nx0 
+wb
+
+$( |- ( ~ B -> ~ A ) $)
+wa wb ax0
+wb nx0 wa nx0 ax0 
+
+ifab__
+
+$( |- ( A -> B ) -> ( ~ B -> ~ A ) $)
+wa wb 
+rev_ax3
+
+mopo
+
+ifnab
+
+trans_theo_2
+
+$( |- ( ~ B -> B ) -> B $)
+wb
+not_self_
+
+mopo
+
+$.
+
+$}
+
+
+
+
 
