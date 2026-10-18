@@ -196,6 +196,9 @@ anb_bna
 nab_nba 
 |- ( ( ~ A -> B ) -> ( ~ B -> A ) )
 
+self_not_
+|- ( A -> ~ A ) -> ~ A 
+
 n_dub_neg_ant_1
 |- ~ ( ~ ~ A -> B ) -> ~ ( A -> B )
 
@@ -208,8 +211,7 @@ n_dub_neg_con_1
 n_dub_neg_con_2
 |- ~ ( A -> B ) -> ~ ( A -> ~ ~ B )
 
-self_not_
-|- ( A -> ~ A ) -> ~ A 
+
 
 
 $)
@@ -1528,7 +1530,94 @@ trans_theo_2
 
 $.
 
+self_not_ $p |- ( ( A -> ~ A ) -> ~ A )
+$=
 
+wa wa nx0 ax0 
+wa nx0 nx0 wa nx0 ax0 
+wa nx0 
 
+$( |- ( A -> ~ A ) -> ( ~ ~ A -> ~ A ) $)
+wa wa nx0 
+ab_nnab
 
+$( |- ( ~ ~ A -> ~ A ) -> ~ A $)
+wa nx0 
+not_self_
+
+trans_theo_2
+
+$.
+
+n_dub_neg_ant_1 $p |- ( ~ ( ~ ~ A -> B ) -> ~ ( A -> B ) )
+$=
+
+wa wb ax0 wa nx0 nx0 wb ax0 ax0 
+wa nx0 nx0 wb ax0 nx0 wa wb ax0 nx0 ax0 
+
+$( |- ( A -> B ) -> ( ~ ~ A -> B ) $)
+wa wb
+ab_nnab
+
+wa wb ax0
+wa nx0 nx0 wb ax0 
+rev_ax3
+
+mopo
+
+$.
+
+n_dub_neg_ant_2 $p |- ( ~ ( A -> B ) -> ~ ( ~ ~ A -> B ) )
+$=
+
+wa nx0 nx0 wb ax0 wa wb ax0 ax0 
+wa wb ax0 nx0 wa nx0 nx0 wb ax0 nx0 ax0 
+
+$( |- ( ~ ~ A -> B ) -> ( A -> B ) $)
+wa wb
+nnab_ab
+
+wa nx0 nx0 wb ax0
+wa wb ax0 
+rev_ax3
+
+mopo
+
+$.
+
+n_dub_neg_con_1 $p |- ( ~ ( A -> ~ ~ B ) -> ~ ( A -> B ) )
+$=
+
+wa wb ax0 wa wb nx0 nx0 ax0 ax0 
+wa wb nx0 nx0 ax0 nx0 wa wb ax0 nx0 ax0 
+
+$( |- ( A -> B ) -> ( A -> ~ ~ B ) $)
+wa wb
+ab_annb
+
+wa wb ax0 
+wa wb nx0 nx0 ax0 
+rev_ax3
+
+mopo
+
+$.
+
+n_dub_neg_con_2 $p |- ( ~ ( A -> B ) -> ~ ( A -> ~ ~ B ) )
+$=
+
+wa wb nx0 nx0 ax0 wa wb ax0 ax0 
+wa wb ax0 nx0 wa wb nx0 nx0 ax0 nx0 ax0 
+
+$( |- ( A -> ~ ~ B ) -> ( A -> B ) $)
+wa wb 
+annb_ab
+
+wa wb nx0 nx0 ax0
+wa wb ax0 
+rev_ax3
+
+mopo
+
+$.
 
