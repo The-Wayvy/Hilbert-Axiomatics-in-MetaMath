@@ -169,6 +169,48 @@ dub_neg
 dub_neg_2
 |- ( A -> ~ ~ A )
 
+dub_neg_imp
+|- ( ~ ~ A -> ~ ~ B ) -> ( B -> A )
+
+ab_nnab
+|- ( A -> B ) -> ( ~ ~ A -> B )
+
+nnab_ab
+|- ( ~ ~ A -> B ) -> ( A -> B )
+
+ab_annb
+|- ( A -> B ) -> ( A -> ~ ~ B )
+
+annb_ab
+|- ( A -> ~ ~ B ) -> ( A -> B )
+
+dub_neg_imp2
+|- ( A -> B ) -> ( ~ ~ A -> ~ ~ B )
+
+rev_ax3
+|- ( A -> B ) -> ( ~ B -> ~ A )
+
+anb_bna
+|- ( A -> ~ B ) -> ( B -> ~ A )
+
+nab_nba 
+|- ( ( ~ A -> B ) -> ( ~ B -> A ) )
+
+n_dub_neg_ant_1
+|- ~ ( ~ ~ A -> B ) -> ~ ( A -> B )
+
+n_dub_neg_ant_2
+|- ~ ( A -> B ) -> ~ ( ~ ~ A -> B )
+
+n_dub_neg_con_1
+|- ~ ( A -> ~ ~ B ) -> ~ ( A -> B )
+
+n_dub_neg_con_2
+|- ~ ( A -> B ) -> ~ ( A -> ~ ~ B )
+
+self_not_
+|- ( A -> ~ A ) -> ~ A 
+
 
 $)
 
@@ -1211,43 +1253,280 @@ $.
 dub_neg_2 $p |- ( A -> ~ ~ A )
 $=
 
-$( |- ~ ~ A -> A $)
+wa nx0 nx0 nx0 wa nx0 ax0 
+wa wa nx0 nx0 ax0 
 
-$( |- ( ~ ~ A -> ~ A ) -> ~ A $)
+$( |- ( ~ ~ ~ A -> ~ A ) $)
+wa
+3n_to_1n
+ 
+$( |- ( ~ ~ ~ A -> ~ A ) -> ( A -> ~ ~ A ) $)
+wa nx0 nx0 
+wa 
+ax3
 
-$( |- ( ~ ~ A -> ~ A ) -> ( A -> ~ A ) $)
-
-$( |- ( A -> ~ A ) -> ( A -> ~ ~ A )  $)
-
-
-$(  $)
+mopo
 
 $.
 
+dub_neg_imp $p |- ( ( ~ ~ A -> ~ ~ B ) -> ( A -> B ) )
+$=
+
+wa nx0 nx0 wb nx0 nx0 ax0 
+wb nx0 wa nx0 ax0 
+wa wb ax0 
+
+wa nx0 wb nx0
+ax3
+
+wb wa 
+ax3
+
+trans_theo_2
+
+$.
+
+ab_nnab $p |- ( ( A -> B ) -> ( ~ ~ A -> B ) )
+$=
+
+wa wb ax0  wa nx0 nx0 wa ax0 wa nx0 nx0 wb ax0 ax0 ax0 
+wa wb ax0 wa nx0 nx0 wb ax0 ax0 
+
+$( |- ( A -> B ) -> ( ( ~ ~ A -> A ) -> ( ~ ~ A -> B ) )  $)
+wa wb ax0 
+wa nx0 nx0 wa wb ax0 ax0 
+wa nx0 nx0 wa ax0 wa nx0 nx0 wb ax0 ax0 
+
+$( |- ( ( A -> B ) -> ( ~ ~ A -> ( A -> B ) ) ) $)
+wa wb ax0 wa wb ax0 ax0 
+wa wb ax0 wa nx0 nx0 wa wb ax0 ax0 ax0 
+
+$( |- ( A -> B ) -> ( A -> B ) $)
+wa wb ax0 
+id_theo
+
+$( |- ( ( A -> B ) -> ( A -> B ) ) -> ( ( A -> B ) -> ( ~ ~ A -> ( A -> B ) ) ) $)
+wa wb ax0 
+wa wb ax0 
+wa nx0 nx0 
+weaken_theo
+
+mopo
+
+$( |- ( ~ ~ A -> ( A -> B ) ) ) -> ( ( ~ ~ A -> A ) -> ( ~ ~ A -> B ) ) $)
+wa nx0 nx0  
+wa
+wb
+ax2
+
+trans_theo_2
+
+$( |- ( ( A -> B ) -> ( ( ~ ~ A -> A ) -> ( ~ ~ A -> B ) ) )
+-> ( ( A -> B ) -> ( ~ ~ A -> B ) )  $)
+
+wa wb ax0 
+wa nx0 nx0 wa ax0 
+wa nx0 nx0 wb ax0 
+
+$( |- ~ ~ A -> A $)
+wa
+dub_neg
+
+simple_theo
+
+mopo
+
+$.
+
+nnab_ab $p |- ( ( ~ ~ A -> B ) -> ( A -> B ) )
+$=
+
+wa nx0 nx0 wb ax0  wa wa nx0 nx0 ax0 wa wb ax0 ax0 ax0 
+wa nx0 nx0 wb ax0 wa wb ax0 ax0 
+
+$( |- ( ~ ~ A -> B ) -> ( ( A -> ~ ~ A ) -> ( A -> B ) )  $)
+wa nx0 nx0 wb ax0 
+wa wa nx0 nx0 wb ax0 ax0 
+wa wa nx0 nx0 ax0 wa wb ax0 ax0 
+
+$( |- ( ( ~ ~ A -> B ) -> ( A -> ( ~ ~ A -> B ) ) ) $)
+wa nx0 nx0 wb ax0 wa nx0 nx0 wb ax0 ax0 
+wa nx0 nx0 wb ax0 wa wa nx0 nx0 wb ax0 ax0 ax0 
+
+$( |- ( ~ ~ A -> B ) -> ( ~ ~ A -> B ) $)
+wa nx0 nx0 wb ax0 
+id_theo
+
+$( |- ( ( ~ ~ A -> B ) -> ( ~ ~ A -> B ) ) -> ( ( ~ ~ A -> B ) -> ( A -> ( ~ ~ A -> B ) ) ) $)
+wa nx0 nx0 wb ax0 
+wa nx0 nx0 wb ax0 
+wa 
+weaken_theo
+
+mopo
+
+$( |- ( A -> ( ~ ~ A -> B ) ) ) -> ( ( A -> ~ ~ A ) -> ( A -> B ) ) $)
+wa  
+wa nx0 nx0 
+wb
+ax2
+
+trans_theo_2
+
+$( |- ( ( A -> B ) -> ( ( A -> ~ ~ A ) -> ( A -> B ) ) )
+-> ( ( ~ ~ A -> B ) -> ( A -> B ) )  $)
+
+wa nx0 nx0 wb ax0 
+wa wa nx0 nx0 ax0 
+wa wb ax0 
+
+$( |- A -> ~ ~ A $)
+wa
+dub_neg_2
+
+simple_theo
+
+mopo
+
+$.
+
+ab_annb $p |- ( ( A -> B ) -> ( A -> ~ ~ B ) )
+$=
+
+wa wb wb nx0 nx0 ax0 ax0 
+wa wb ax0 wa wb nx0 nx0 ax0 ax0
+
+wb wb nx0 nx0 ax0
+wa
+
+wb
+dub_neg_2
+
+prefix_theo
+
+wa wb wb nx0 nx0
+ax2
+
+mopo
+
+$. 
+
+annb_ab $p |- ( ( A -> ~ ~ B ) -> ( A -> B ) )
+$=
+
+wa wb nx0 nx0 wb ax0 ax0 
+wa wb nx0 nx0 ax0 wa wb ax0 ax0 
+
+wb nx0 nx0 wb ax0
+wa
+
+wb
+dub_neg
+
+prefix_theo
+
+wa wb nx0 nx0 wb  
+ax2
+
+mopo
+
+$. 
+
+dub_neg_imp2 $p |- ( ( A -> B ) -> ( ~ ~ A -> ~ ~ B ) )
+$=
+
+wa wb ax0 
+wa nx0 nx0 wb ax0 
+wa nx0 nx0 wb nx0 nx0 ax0 
+
+$( |- ( A -> B ) -> ( ~ ~ A -> B ) $)
+wa wb
+ab_nnab
+
+$( |- ( ( ~ ~ A -> B ) -> ( ~ ~ A -> ~ ~ B ) ) $)
+wa nx0 nx0 wb wb nx0 nx0 ax0 ax0 
+wa nx0 nx0 wb ax0 wa nx0 nx0 wb nx0 nx0 ax0 ax0 
+
+$( |- ( ~ ~ A -> ( B -> ~ ~ B ) ) $)
+wb wb nx0 nx0 ax0 
+wa nx0 nx0
+
+$( |- ( B -> ~ ~ B ) $)
+wb
+dub_neg_2
+
+prefix_theo
 
 
+$( |- ( ~ ~ A -> ( B -> ~ ~ B ) ) -> ( ( ~ ~ A -> B ) -> ( ~ ~ A -> ~ ~ B ) ) $)
+wa nx0 nx0 
+wb 
+wb nx0 nx0
+ax2
+
+mopo
+
+trans_theo_2
+
+$.
+
+rev_ax3 $p |- ( ( A -> B ) -> ( ~ B -> ~ A ) )
+$=
+
+wa wb ax0
+wa nx0 nx0 wb nx0 nx0 ax0 
+wb nx0 wa nx0 ax0 
+
+$( |- ( A -> B ) -> ( ~ ~ A -> ~ ~ B ) $)
+wa wb
+dub_neg_imp2
+
+$( |- ( ~ ~ A -> ~ ~ B ) -> ( ~ B -> ~ A ) $)
+wa nx0 wb nx0 
+ax3
+
+trans_theo_2
+
+$.
+
+anb_bna $p |- ( ( A -> ~ B ) -> ( B -> ~ A ) )
+$=
+
+wa wb nx0 ax0 
+wa nx0 nx0 wb nx0 ax0 
+wb wa nx0 ax0 
+
+$( |- ( A -> ~ B ) -> ( ~ ~ A -> ~ B ) $)
+wa wb nx0 
+ab_nnab
+
+$( |- ( ~ ~ A -> ~ B ) -> ( B -> ~ A ) $)
+wa nx0 wb 
+ax3
+
+trans_theo_2
 
 
+$.
 
+nab_nba $p |- ( ( ~ A -> B ) -> ( ~ B -> A ) )
+$=
 
+wa nx0 wb ax0 
+wa nx0 wb nx0 nx0 ax0 
+wb nx0 wa ax0 
 
+$( |- ( ~ A -> B ) -> ( ~ A -> ~ ~ B ) $)
+wa nx0 wb
+ab_annb
 
+$( |- ( ~ A -> ~ ~ B ) -> ( ~ B -> A ) $)
+wa wb nx0 
+ax3
 
+trans_theo_2
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+$.
 
 
 
